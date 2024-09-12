@@ -1,0 +1,31 @@
+﻿@page "/role"
+@using Newtonsoft.Json;
+
+<PageTitle>角色管理</PageTitle>
+
+<h1> @str </h1>
+
+@code {
+
+    @inject HttpClient _httpClient
+
+    private string str;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await _httpClient.GetFromJsonAsync<Result<PageList<RoleDto>>>($"/api/role/pagelist?page_index=1&page_size=10");
+               str = JsonConvert.SerializeObject(result);
+        await base.OnInitializedAsync();
+        }
+        catch (Exception ex)
+        {
+
+            str = ex.Message;
+        }
+
+     
+    }
+
+}

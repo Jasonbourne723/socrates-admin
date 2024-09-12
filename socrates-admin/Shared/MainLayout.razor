@@ -1,0 +1,108 @@
+﻿@using AntDesign.ProLayout;
+@inherits LayoutComponentBase
+
+<AntDesign.ProLayout.BasicLayout MenuData="_menuData"
+                                 NavTheme="MenuTheme.Dark"
+                                 ContentWidth="Fluid"
+                                 Layout="AntDesign.ProLayout.Layout.Side"
+                                 PrimaryColor="daybreak"
+                                 FixedHeader="true"
+                                 MenuHeaderRender="true" HeaderHeight="48" MenuRender="true" SplitMenus="false" >
+    <ChildContent>
+        @Body
+    </ChildContent>
+    <FooterRender>
+        <FooterView Copyright="2024 Socrates Auth" Links="Links"></FooterView>
+    </FooterRender>
+</AntDesign.ProLayout.BasicLayout>
+@*<SettingDrawer />*@
+
+<style scoped>
+    #logo img {
+        display: none !important
+    }
+
+    .anticon {
+        position: relative;
+        top: -2.9px;
+    }
+</style>
+
+@code
+{
+    private readonly MenuDataItem[] _menuData =
+    {
+        new MenuDataItem
+        {
+            Path = "/",
+            Name = "首页",
+            Key = "home",
+
+        },
+        new MenuDataItem
+        {
+          Name = "用户管理",
+          Key = "user_manage",
+          Children =new MenuDataItem[]
+          {
+                new MenuDataItem
+                {
+                    Path = "/user",
+                    Name = "用户列表",
+                    Key = "user",
+
+                },
+                 new MenuDataItem
+                {
+                    Path = "/organization",
+                    Name = "组织架构",
+                    Key = "organization",
+
+                },
+                 new MenuDataItem
+                {
+                    Path = "/post",
+                    Name = "职位管理",
+                    Key = "post",
+                },
+          }
+        },
+         new MenuDataItem
+        {
+          Name = "权限管理",
+          Key = "permission_manage",
+          Children =new MenuDataItem[]
+          {
+                new MenuDataItem
+                {
+                    Path = "/permission_space",
+                    Name = "权限空间",
+                    Key = "permission_space",
+                },
+                 new MenuDataItem
+                {
+                    Path = "/role",
+                    Name = "角色管理",
+                    Key = "role",
+                },
+                 new MenuDataItem
+                {
+                    Path = "/resource",
+                    Name = "资源管理",
+                    Key = "resource",
+                },
+                 new MenuDataItem
+                {
+                    Path = "/policy",
+                    Name = "权限策略",
+                    Key = "policy",
+                },
+          }
+        },
+    };
+
+    public LinkItem[] Links { get; set; } =
+    {
+
+    };
+}
