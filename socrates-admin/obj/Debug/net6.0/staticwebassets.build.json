@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vR202SHQObWA9Z8uCYd8ybnbuAosMHjR3T0hYd8/peU=",
+  "Hash": "l/6re4pPmw5DUtke9dtBsScX3AjjQGmankVRZS7bjik=",
   "Source": "socrates-admin",
   "BasePath": "/",
   "Mode": "Root",
@@ -6800,6 +6800,40 @@
       "OriginalItemSpec": "C:\\Users\\jason\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\6.0.16\\runtimes\\browser-wasm\\native\\icudt_no_CJK.dat"
     },
     {
+      "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Mapster.Core.dll",
+      "SourceId": "socrates-admin",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Mapster.Core.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\jason\\.nuget\\packages\\mapster.core\\1.2.1\\lib\\net6.0\\Mapster.Core.dll"
+    },
+    {
+      "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Mapster.dll",
+      "SourceId": "socrates-admin",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Mapster.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\jason\\.nuget\\packages\\mapster\\7.4.0\\lib\\net6.0\\Mapster.dll"
+    },
+    {
       "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Authorization.dll",
       "SourceId": "socrates-admin",
       "SourceType": "Computed",
@@ -12818,6 +12852,23 @@
       "OriginalItemSpec": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Runtime.Intrinsics.dll"
     },
     {
+      "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\obj\\Debug\\net6.0\\build-gz\\U6J7B5BS.gz",
+      "SourceId": "socrates-admin",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Mapster.Core.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Mapster.Core.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Mapster.Core.dll"
+    },
+    {
       "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\obj\\Debug\\net6.0\\build-gz\\Uakq4cHS.gz",
       "SourceId": "socrates-admin",
       "SourceType": "Computed",
@@ -13479,6 +13530,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Net.Primitives.dll"
+    },
+    {
+      "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\obj\\Debug\\net6.0\\build-gz\\zDszgzn7.gz",
+      "SourceId": "socrates-admin",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Mapster.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Mapster.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Mapster.dll"
     },
     {
       "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\obj\\Debug\\net6.0\\build-gz\\zpI3QbOh.gz",

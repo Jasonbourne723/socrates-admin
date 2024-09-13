@@ -834,3 +834,11 @@ C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0
 C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\wwwroot\_framework\Newtonsoft.Json.dll.gz
 C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\obj\Debug\net6.0\build-gz\yOQn8SQE.gz
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\wwwroot\_framework\Mapster.Core.dll
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\wwwroot\_framework\Mapster.dll
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\wwwroot\_framework\Mapster.Core.dll.gz
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\wwwroot\_framework\Mapster.dll.gz
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\Mapster.dll
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\Mapster.Core.dll
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\obj\Debug\net6.0\build-gz\zDszgzn7.gz
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\obj\Debug\net6.0\build-gz\U6J7B5BS.gz

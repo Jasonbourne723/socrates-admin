@@ -24,6 +24,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/jason/Documents/Doc/Code/socrates-admin/socrates-admin/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/jason/Documents/Doc/Code/socrates-admin/socrates-admin/Pages/Organization.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JnYW5pemF0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -50,6 +54,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/jason/Documents/Doc/Code/socrates-admin/socrates-admin/Pages/User.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jason/Documents/Doc/Code/socrates-admin/socrates-admin/Shared/AuthLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEF1dGhMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/jason/Documents/Doc/Code/socrates-admin/socrates-admin/_Imports.razor]
