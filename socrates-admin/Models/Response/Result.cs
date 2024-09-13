@@ -7,4 +7,10 @@
         public string message { get; set; }
     }
 
+    public class Result
+    {
+        public int error_code { get; set; }
+        public string message { get; set; }
+    }
+
 }

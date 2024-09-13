@@ -7,7 +7,7 @@
                                  Layout="AntDesign.ProLayout.Layout.Side"
                                  PrimaryColor="daybreak"
                                  FixedHeader="true"
-                                 MenuHeaderRender="true" HeaderHeight="48" MenuRender="true" SplitMenus="false" >
+                                 MenuHeaderRender="true" HeaderHeight="48" MenuRender="true" SplitMenus="false">
     <ChildContent>
         @Body
     </ChildContent>
@@ -15,7 +15,6 @@
         <FooterView Copyright="2024 Socrates Auth" Links="Links"></FooterView>
     </FooterRender>
 </AntDesign.ProLayout.BasicLayout>
-@*<SettingDrawer />*@
 
 <style scoped>
     #logo img {
@@ -37,12 +36,14 @@
             Path = "/",
             Name = "首页",
             Key = "home",
+            Icon = "home"
 
         },
         new MenuDataItem
         {
           Name = "用户管理",
           Key = "user_manage",
+          Icon = "team",
           Children =new MenuDataItem[]
           {
                 new MenuDataItem
@@ -50,13 +51,14 @@
                     Path = "/user",
                     Name = "用户列表",
                     Key = "user",
-
+                     Icon = "user",
                 },
                  new MenuDataItem
                 {
                     Path = "/organization",
                     Name = "组织架构",
                     Key = "organization",
+                    Icon = "apartment"
 
                 },
                  new MenuDataItem
@@ -64,6 +66,7 @@
                     Path = "/post",
                     Name = "职位管理",
                     Key = "post",
+                    Icon = "usb"
                 },
           }
         },
@@ -71,6 +74,7 @@
         {
           Name = "权限管理",
           Key = "permission_manage",
+          Icon = "security-scan",
           Children =new MenuDataItem[]
           {
                 new MenuDataItem
@@ -78,24 +82,28 @@
                     Path = "/permission_space",
                     Name = "权限空间",
                     Key = "permission_space",
+                    Icon = "lock"
                 },
                  new MenuDataItem
                 {
                     Path = "/role",
                     Name = "角色管理",
                     Key = "role",
+                    Icon = "audit"
                 },
                  new MenuDataItem
                 {
                     Path = "/resource",
                     Name = "资源管理",
                     Key = "resource",
+                    Icon = "folder-open"
                 },
                  new MenuDataItem
                 {
                     Path = "/policy",
                     Name = "权限策略",
                     Key = "policy",
+                    Icon = "file-protect",
                 },
           }
         },

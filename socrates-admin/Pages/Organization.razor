@@ -1,8 +1,106 @@
 ﻿@page "/organization"
+@using Mapster;
+@using Models.Request;
+@using Services;
 
 <PageTitle>组织架构</PageTitle>
 
 
-@code {
+<Modal Title="@_title"
+       Visible="@_visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel"
+       ConfirmLoading="@_confirmLoading">
+    <Form Model="@_organization"
+          LabelColSpan="8"
+          WrapperColSpan="16">
+        <FormItem Label="名称">
+            <Input @bind-Value="@context.name" />
+        </FormItem>
+        <FormItem Label="编号">
+            <Input @bind-Value="@context.code" />
+        </FormItem>
+    </Form>
+</Modal>
+<Row Gutter="16">
+    <Col Span="8">
+    <Card Bordered="false" Title=@("组织架构")>
+        <Body>
+            <Tree DefaultExpandAll
+                  Draggable
+                  BlockNode
+                  ShowIcon DataSource="_nodes"
+                   TitleExpression="x => x.DataItem.name"
+                   ChildrenExpression="x => x.DataItem.items"
+                   IsLeafExpression="x => x.DataItem.items?.Count == 0"
+                   KeyExpression="x => x.DataItem.id.ToString()"
+                   TItem="OrganizationNodeDto">
+             </Tree>
+         </Body>
+     </Card>
+     </Col>
+     <Col Span="16">
+     <Card Bordered="false" Title=@("Card title")>
+         <Body>
+             <p>Card content</p>
+         </Body>
+     </Card>
+     </Col>
+ </Row>
 
+
+
+
+ @code {
+    @inject IOrganizationService _organizationService
+
+    private List<OrganizationNodeDto> _nodes;
+
+    private bool _visible = false;
+    private string _title = "";
+    private OrganizationDto _organization = new();
+    private bool _confirmLoading = false;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await GetList();
+        base.OnInitialized();
+    }
+
+    protected async Task GetList()
+    {
+        var result = await _organizationService.List();
+        _nodes = result.data;
+    }
+
+    protected async Task HandleCreateNode()
+    {
+        _title = "新增部门";
+        _visible = true;
+    }
+
+
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        _confirmLoading = true;
+        StateHasChanged();
+
+        if (_title == "新增部门")
+        {
+            await _organizationService.Create(_organization.Adapt<CreateOrganizationDto>());
+        }
+        else // 编辑
+        {
+            await _organizationService.Update(_organization.Adapt<UpdateOrganizationDto>());
+        }
+
+        await GetList();
+        _visible = false;
+        _confirmLoading = false;
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        _visible = false;
+    }
 }
