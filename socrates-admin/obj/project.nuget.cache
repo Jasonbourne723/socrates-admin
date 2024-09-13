@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "6iibEJwFK+C/Ej8tvH6FOrnsPyUszz/rjekU//3ZNNDY4hb0mMMTUlr3SARCe3EnJFh6TCB11n6T1wOmmIoyfw==",
+  "dgSpecHash": "kcTvruN/I8xsBnAZZphlTXk6K5alO6/fQs86UpF4ntKz6aeLkq+heqXO+2blhUSSJKagzQB+i/C2zVM41qxrIQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\socrates-admin.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jason\\.nuget\\packages\\antdesign\\0.20.4.2\\antdesign.0.20.4.2.nupkg.sha512",
     "C:\\Users\\jason\\.nuget\\packages\\antdesign.prolayout\\0.20.3\\antdesign.prolayout.0.20.3.nupkg.sha512",
+    "C:\\Users\\jason\\.nuget\\packages\\blazored.localstorage\\4.5.0\\blazored.localstorage.4.5.0.nupkg.sha512",
     "C:\\Users\\jason\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
     "C:\\Users\\jason\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
     "C:\\Users\\jason\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.15\\microsoft.aspnetcore.authorization.6.0.15.nupkg.sha512",

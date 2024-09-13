@@ -842,3 +842,7 @@ C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0
 C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\Mapster.Core.dll
 C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\obj\Debug\net6.0\build-gz\zDszgzn7.gz
 C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\obj\Debug\net6.0\build-gz\U6J7B5BS.gz
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\wwwroot\_framework\Blazored.LocalStorage.dll
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\wwwroot\_framework\Blazored.LocalStorage.dll.gz
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\bin\Debug\net6.0\Blazored.LocalStorage.dll
+C:\Users\jason\Documents\Doc\Code\socrates-admin\socrates-admin\obj\Debug\net6.0\build-gz\kfKHiIYR.gz

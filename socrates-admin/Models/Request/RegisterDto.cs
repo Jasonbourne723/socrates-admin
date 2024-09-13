@@ -1,7 +1,9 @@
 ﻿namespace Models.Request
 {
-    public class LoginDto
+    public class RegisterDto
     {
+        public string name { get; set; }
+
         public string mobile { get; set; }
 
         public string password { get; set; }

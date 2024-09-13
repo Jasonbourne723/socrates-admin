@@ -9,6 +9,7 @@
     "assembly": {
       "AntDesign.dll": "sha256-QE+M8trMAk+VoNxPoTBf+marwLFOQ6Nl\/X+3dccMqTw=",
       "AntDesign.ProLayout.dll": "sha256-k02MO1fFtxeoEpOujD7dBXU2GeyD6bxSFbKDoQMf0Ek=",
+      "Blazored.LocalStorage.dll": "sha256-lAGIyP65K8gc+7vvUYMTCNZJaXJtiHqSimcfhpcBOuQ=",
       "Mapster.dll": "sha256-PxeTy0ekac4meN9WbpanPTEqRy0fvut\/o\/dlwfF6q5E=",
       "Mapster.Core.dll": "sha256-TDBIFDuTzbIwOec7eshSrlsZ9h\/fTDQoz+7O6gfBOPM=",
       "Microsoft.AspNetCore.Authorization.dll": "sha256-iHLDF8B7pfRTW\/hNQ3ctXZN6PEfTsWrDiTyw1fLNMsI=",
@@ -202,7 +203,7 @@
       "mscorlib.dll": "sha256-C3gpWQMELcHYfrHU\/1agQUvWTtSNs9Ul2suMxcKFnIc=",
       "netstandard.dll": "sha256-CgGkoZQx73t3qchcsu85kgBcgrjNEOiudArOwKNb18k=",
       "System.Private.CoreLib.dll": "sha256-6nUSjiT7okMlkN897OnDypwppYuK7JxTahOClXkAuwE=",
-      "socrates-admin.dll": "sha256-RaCskyTIO5uYTwEMmUJ5JkfE4ejFIX02q+kjnihNcvo="
+      "socrates-admin.dll": "sha256-ZplLZH7xBsTpEwrN3xme3RZ6VlDPpEJ5ZeqfDZgRp1A="
     },
     "extensions": null,
     "lazyAssembly": null,
@@ -211,7 +212,7 @@
       "_content\/AntDesign.ProLayout\/AntDesign.ProLayout.lib.module.js": "sha256-WCcHRiHXl0rd+bmdXmqoEB\/WK+uV8d1crI\/A8t9FPsM="
     },
     "pdb": {
-      "socrates-admin.pdb": "sha256-LZdDnbaryfG80VwyyQuMo\/AK6VAJLCi\/QXs7Y3C+Ai4="
+      "socrates-admin.pdb": "sha256-34Qo7hIJsrZAKpox+2yv5rGcAewVMjkZ\/C2ctwljN40="
     },
     "runtime": {
       "dotnet.6.0.16.su3boixm70.js": "sha256-GT2gK+GjOisRXJY+9yh6H8s6K\/KDIsaFMFIgWvAnttY=",

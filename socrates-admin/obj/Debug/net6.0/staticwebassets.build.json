@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "l/6re4pPmw5DUtke9dtBsScX3AjjQGmankVRZS7bjik=",
+  "Hash": "dScXWnyqSaWb1zF0AnNBhYZXYjYQSREv+QdbIpvnnRI=",
   "Source": "socrates-admin",
   "BasePath": "/",
   "Mode": "Root",
@@ -6681,6 +6681,23 @@
       "OriginalItemSpec": "C:\\Users\\jason\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly\\6.0.15\\build\\net6.0\\blazor.webassembly.js"
     },
     {
+      "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll",
+      "SourceId": "socrates-admin",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Blazored.LocalStorage.dll",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "BlazorWebAssemblyResource",
+      "AssetTraitValue": "runtime",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\jason\\.nuget\\packages\\blazored.localstorage\\4.5.0\\lib\\net6.0\\Blazored.LocalStorage.dll"
+    },
+    {
       "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\dotnet.6.0.16.su3boixm70.js",
       "SourceId": "socrates-admin",
       "SourceType": "Computed",
@@ -11813,6 +11830,23 @@
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\System.Runtime.InteropServices.dll"
+    },
+    {
+      "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\obj\\Debug\\net6.0\\build-gz\\kfKHiIYR.gz",
+      "SourceId": "socrates-admin",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "_framework/Blazored.LocalStorage.dll.gz",
+      "AssetKind": "Build",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "RelatedAsset": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "CopyToOutputDirectory": "PreserveNewest",
+      "CopyToPublishDirectory": "Never",
+      "OriginalItemSpec": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Blazored.LocalStorage.dll"
     },
     {
       "Identity": "C:\\Users\\jason\\Documents\\Doc\\Code\\socrates-admin\\socrates-admin\\obj\\Debug\\net6.0\\build-gz\\kh3z70Iu.gz",
