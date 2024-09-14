@@ -1,0 +1,54 @@
+﻿@page "/register"
+@using Models.Request;
+@using Services;
+@layout AuthLayout
+@inject NavigationManager navigationManager
+
+<PageTitle>注册</PageTitle>
+
+<dev class="back">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div>
+            <h3 style="text-align:center;margin:50px;">注册</h3>
+            <Form Model="@_registerDto"
+                  LabelColSpan="8"
+                  WrapperColSpan="16"
+                  OnFinish="ReigsterAsync">
+                <FormItem Label="手机号">
+                    <Input @bind-Value="@context.mobile" />
+                </FormItem>
+                <FormItem Label="名字">
+                    <Input @bind-Value="@context.name" />
+                </FormItem>
+                <FormItem Label="密码">
+                    <InputPassword @bind-Value="@context.password" />
+                </FormItem>
+
+                <Button Type="primary" HtmlType="submit" Class="submit" Size="large" Block>注&nbsp;册</Button>
+            </Form>
+        </div>
+    </div>
+</dev>
+
+<style>
+    .back {
+        background-image: url(Login.png);
+        background-size: cover; /* 背景图片会根据页面大小自动调整 */
+        background-position: center; /* 背景图片居中显示 */
+        background-repeat: no-repeat; /* 防止图片重复 */
+        height: 100vh; /* 让页面高度占满视口 */
+        margin: 0; /* 去掉默认的页面边距 */
+    }
+</style>
+
+@code {
+    @inject IAuthService _authService
+
+    private RegisterDto _registerDto = new();
+
+
+    protected async Task ReigsterAsync(EditContext context)
+    {
+        await _authService.Register(_registerDto);
+    }
+}

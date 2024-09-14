@@ -6,29 +6,9 @@
 
 <PageTitle>登录</PageTitle>
 
-<Modal Title="@("注册")"
-       Visible="@_visible"
-       OnOk="@HandleOk">
-    <Form Model="@_registerDto"
-          LabelColSpan="8"
-          WrapperColSpan="16">
-        <FormItem Label="名称">
-            <Input @bind-Value="@context.name" />
-        </FormItem>
-        <FormItem Label="编号">
-            <Input @bind-Value="@context.mobile" />
-        </FormItem>
-
-        <FormItem Label="密码">
-            <InputPassword @bind-Value="@context.password" />
-        </FormItem>
-
-    </Form>
-</Modal>
-
-<div>
-    <div style="padding:30px;">
-        <Card Bordered="true" Title=@("用户登录") Style="width:400px" Hoverable="true">
+<div class="back">
+    <div style="position: fixed; left: 10%; top: 50%; transform: translateY(-50%); padding:30px;">
+        <Card Bordered="true" Title=@("登录中心") Style="width:400px" Hoverable="true">
             <Body>
                 <Form Model="@_loginDto" OnFinish="LoginAsync">
                     <FormItem>
@@ -47,7 +27,7 @@
                         </SpaceItem>
                         <SpaceItem>
                             <div class="other">
-                                <a class="register" @onclick="Reigster">注册账户</a>
+                                <a class="register" href="/register">注册账户</a>
                                 <a style="float: right;">
                                     忘记密码
                                 </a>
@@ -59,6 +39,17 @@
         </Card>
     </div>
 </div>
+
+<style>
+    .back {
+        background-image: url(Login.png);
+        background-size: cover; /* 背景图片会根据页面大小自动调整 */
+        background-position: center; /* 背景图片居中显示 */
+        background-repeat: no-repeat; /* 防止图片重复 */
+        height: 100vh; /* 让页面高度占满视口 */
+        margin: 0; /* 去掉默认的页面边距 */
+    }
+</style>
 
 @code {
     @inject IAuthService _authService
@@ -72,21 +63,5 @@
     protected async Task LoginAsync(EditContext context)
     {
         await _authService.Login(_loginDto);
-    }
-
-    protected void Reigster(MouseEventArgs args)
-    {
-
-        _visible = true;
-    }
-
-    protected async Task HandleOk(MouseEventArgs args)
-    {
-
-        await _authService.Register(_registerDto);
-
-        _visible = false;
-
-
     }
 }
