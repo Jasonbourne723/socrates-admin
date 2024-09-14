@@ -25,8 +25,20 @@ else
             <FormItem Label="编号">
                 <Input @bind-Value="@context.code" />
             </FormItem>
-        </Form>
-    </Modal>
+
+            <FormItem Label="权限空间">
+                <Select TItem="PermissionSpaceDto"
+                        TItemValue="int"
+                        DataSource="@_permissionSpaceDtos"
+                        ValueName="@nameof(PermissionSpaceDto.id)"
+                        LabelName="@nameof(PermissionSpaceDto.name)"
+                @bind-Value="@_role.permission_space_id"
+                    DefaultActiveFirstOption>
+            </Select>
+        </FormItem>
+
+    </Form>
+</Modal>
 
 
 
@@ -52,6 +64,7 @@ else
 @code {
 
     @inject IRoleService _roleService
+    @inject IPermissionSpaceService _permissionSpaceService
 
     private PageList<RoleDto> _pageList;
     private int _pageIndex = 1;
@@ -64,9 +77,12 @@ else
     private string _title = "";
     private RoleDto _role;
 
+    private List<PermissionSpaceDto> _permissionSpaceDtos = new();
+
     protected override async Task OnInitializedAsync()
     {
         await GetPageList();
+        await GetPermissionSpaces();
     }
 
     protected async Task GetPageList()
@@ -91,7 +107,7 @@ else
 
     private async Task HandleDelete(RoleDto roleDto)
     {
-        await _roleService.Delete(roleDto.id);   
+        await _roleService.Delete(roleDto.id);
         await GetPageList();
     }
 
@@ -129,6 +145,12 @@ else
     private void HandleCancel(MouseEventArgs e)
     {
         _visible = false;
+    }
+
+    private async Task GetPermissionSpaces()
+    {
+        var result = await _permissionSpaceService.List();
+        _permissionSpaceDtos = result.data;
     }
 
 }

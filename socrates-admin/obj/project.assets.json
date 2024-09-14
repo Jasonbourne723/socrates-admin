@@ -48,6 +48,18 @@
           "buildMultiTargeting/AntDesign.ProLayout.props": {}
         }
       },
+      "Blazored.LocalStorage/4.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
+        }
+      },
       "Mapster/7.4.0": {
         "type": "package",
         "dependencies": {
@@ -1899,6 +1911,18 @@
         },
         "buildMultiTargeting": {
           "buildMultiTargeting/AntDesign.ProLayout.props": {}
+        }
+      },
+      "Blazored.LocalStorage/4.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
         }
       },
       "Mapster/7.4.0": {
@@ -4170,6 +4194,22 @@
         "staticwebassets/theme/purple.css",
         "staticwebassets/theme/sunset.css",
         "staticwebassets/theme/volcano.css"
+      ]
+    },
+    "Blazored.LocalStorage/4.5.0": {
+      "sha512": "6nZuJwA7zNIKx83IsObiHXZb09ponJOpCClU3en+hI8ZFvrOKXeOw+H7TegQZQrvdR1n9fkrVkEBQZg8vx6ZTw==",
+      "type": "package",
+      "path": "blazored.localstorage/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "blazored.localstorage.4.5.0.nupkg.sha512",
+        "blazored.localstorage.nuspec",
+        "icon.png",
+        "lib/net6.0/Blazored.LocalStorage.dll",
+        "lib/net7.0/Blazored.LocalStorage.dll",
+        "lib/net8.0/Blazored.LocalStorage.dll"
       ]
     },
     "Mapster/7.4.0": {
@@ -8718,6 +8758,7 @@
     "net6.0": [
       "AntDesign >= 0.20.4.2",
       "AntDesign.ProLayout >= 0.20.3",
+      "Blazored.LocalStorage >= 4.5.0",
       "Mapster >= 7.4.0",
       "Microsoft.AspNetCore.Components.WebAssembly >= 6.0.15",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 6.0.15",
@@ -8772,6 +8813,10 @@
           "AntDesign.ProLayout": {
             "target": "Package",
             "version": "[0.20.3, )"
+          },
+          "Blazored.LocalStorage": {
+            "target": "Package",
+            "version": "[4.5.0, )"
           },
           "Mapster": {
             "target": "Package",
