@@ -29,26 +29,35 @@ namespace Extensions
                 var tokenDto = await _localStorageService.GetItemAsync<TokenDto>("token");
                 if (tokenDto != null)
                 {
-                    request.Headers.Add("Authorization",$"{tokenDto.token_type} {tokenDto.access_token}");
+                    request.Headers.Add("Authorization", $"{tokenDto.token_type} {tokenDto.access_token}");
                 }
             }
 
             // 调用基础的 SendAsync 方法发送请求
-            var response = await base.SendAsync(request, cancellationToken);
-
-            // 在这里处理响应，例如统一错误处理
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                var response = await base.SendAsync(request, cancellationToken);
+
+                // 在这里处理响应，例如统一错误处理
+                if (!response.IsSuccessStatusCode)
                 {
-                    _navigationManager.NavigateTo("/login", true);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        _navigationManager.NavigateTo("/login", true);
+                    }
+                    else
+                    {
+                        await _messageService.Error($"接口访问失败：{response.StatusCode}");
+                    }
                 }
-                else
-                {
-                    await _messageService.Error($"接口访问失败：{response.StatusCode}");
-                }
+                return response;
             }
-            return response;
+            catch (Exception ex)
+            {
+                await _messageService.Error($"服务器连接失败");
+                return null;
+            }
+
         }
     }
 }

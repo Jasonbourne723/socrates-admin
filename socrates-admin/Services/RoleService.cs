@@ -21,7 +21,7 @@ namespace Services
             return await _httpClient.GetFromJsonAsync<Result<PageList<RoleDto>>>(path);
         }
 
-        public async Task<Result<RoleDto>?> Create(CraeteRoleDto dto)
+        public async Task<Result<RoleDto>?> Create(CreateRoleDto dto)
         {
             var resposneMessage = await _httpClient.PostAsJsonAsync(_path, dto);
             return await resposneMessage.Content.ReadFromJsonAsync<Result<RoleDto>>();

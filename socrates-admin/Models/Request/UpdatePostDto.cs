@@ -1,6 +1,6 @@
 ﻿namespace Models.Request
 {
-    public class UpdateRoleDto : CreateRoleDto
+    public class UpdatePostDto : CreatePostDto
     {
         public long id { get; set; }
     }
