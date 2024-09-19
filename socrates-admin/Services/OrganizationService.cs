@@ -1,5 +1,6 @@
 ﻿using Models.Request;
 using Models.Response;
+using System.Net.Http;
 using System.Net.Http.Json;
 using Result = Models.Response.Result;
 
@@ -16,9 +17,10 @@ namespace Services
             _path = $"/api/organization";
         }
 
-        public async Task<Result<List<OrganizationNodeDto>>?> List()
+        public async Task<Result<List<OrganizationNodeDto>>?> All()
         {
-            return await _httpClient.GetFromJsonAsync<Result<List<OrganizationNodeDto>>>(_path);
+            
+            return await _httpClient.GetFromJsonAsync<Result<List<OrganizationNodeDto>>>($"{_path}/all");
         }
 
         public async Task<Result<OrganizationDto>?> Create(CreateOrganizationDto dto)
@@ -37,6 +39,11 @@ namespace Services
         {
             var resposneMessage = await _httpClient.DeleteAsync($"{_path}/{id}");
             return await resposneMessage.Content.ReadFromJsonAsync<Result>();
+        }
+
+        public async Task<Result<List<OrganizationDto>>?> List()
+        {
+            return await _httpClient.GetFromJsonAsync<Result<List<OrganizationDto>>>(_path);
         }
     }
 

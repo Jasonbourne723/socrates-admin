@@ -107,6 +107,22 @@
                 },
           }
         },
+        new MenuDataItem
+        {
+          Name = "应用管理",
+          Key = "application_manage",
+          Icon = "appstore",
+          Children =new MenuDataItem[]
+          {
+                new MenuDataItem
+                {
+                    Path = "/application",
+                    Name = "应用",
+                    Key = "application",
+                    Icon = "appstore-add",
+                }
+          }
+        }
     };
 
     public LinkItem[] Links { get; set; } =

@@ -7,5 +7,7 @@
         public string mobile { get; set; }
 
         public string password { get; set; }
+
+        public string password2 { get; set; }
     }
 }

@@ -8,6 +8,8 @@
 
         public string code { get; set; }
 
+        public long parent_id { get; set; }
+
         public List<OrganizationNodeDto> items { get; set; }
     }
 

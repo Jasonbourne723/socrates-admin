@@ -18,11 +18,13 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IOrganizationService, OrganizationService>();
 builder.Services.AddScoped<IPermissionSpaceService, PermissionSpaceService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 builder.Services.AddScoped(sp =>
 {
 
-    var handler = new CustomHttpClientHandler(sp.GetRequiredService<IMessageService>(), sp.GetRequiredService<NavigationManager>(),sp.GetRequiredService<ILocalStorageService>())
+    var handler = new CustomHttpClientHandler(sp.GetRequiredService<IMessageService>(), sp.GetRequiredService<NavigationManager>(), sp.GetRequiredService<ILocalStorageService>())
     {
 
         InnerHandler = new HttpClientHandler()

@@ -2,7 +2,186 @@
 
 <PageTitle>职位管理</PageTitle>
 
+@using Newtonsoft.Json;
+@using Services;
+
+
+@if (_pageList == null)
+{
+    <p>loading</p>
+}
+else
+{
+    // 新增/编辑对话框
+    <Modal Title="@_title"
+           Visible="@_visible"
+           OnOk="@HandleOk"
+           OnCancel="@HandleCancel"
+           ConfirmLoading="@_confirmLoading">
+        <Form Model="@_entity"
+              LabelColSpan="8"
+              WrapperColSpan="16">
+            <FormItem Label="名称">
+                <Input @bind-Value="@context.name" />
+            </FormItem>
+            <FormItem Label="编号">
+                <Input @bind-Value="@context.code" />
+            </FormItem>
+            <FormItem Label="关联部门">
+                <TreeSelect DataSource="_organizations"
+                            TitleExpression="node=>node.DataItem.name"
+                            TItem="OrganizationNodeDto"
+                            TItemValue="long"
+                            ItemValue="node=> node.id"
+                            KeyExpression="node=>node.DataItem.code"
+                            ChildrenExpression="node=>node.DataItem.items"
+                @bind-Values="bindOrganizationIds"
+                            Placeholder="Please select"
+                        AllowClear
+                        Multiple
+                        TreeDefaultExpandAll
+                        EnableSearch
+                             MatchedStyle="font-weight: bold" />
+             </FormItem>
+         </Form>
+     </Modal>
+
+
+
+    <Table TItem="PostDto" PageSize="5" Total="_pageList.TotalCount" DataSource="_pageList.Rows">
+        <TitleTemplate>
+            <Flex Justify="end" Gap="10">
+                <Button Type="primary" OnClick="HandleCreate">新增</Button>
+            </Flex>
+        </TitleTemplate>
+        <ColumnDefinitions Context="row">
+            <Selection />
+            <PropertyColumn Property="c=>c.name"></PropertyColumn>
+            <PropertyColumn Property="c=>c.code"></PropertyColumn>
+            <PropertyColumn Property="c=>c.organization_ids">
+                @if (row.organization_ids != null && row.organization_ids.Count > 0)
+                {
+                    foreach (var organizationId in row.organization_ids)
+                    {
+                        var organization = _organizationList.First(x => x.id == organizationId);
+                        <Tag Color="@("green")">@organization.name</Tag>
+                    }
+                }
+            </PropertyColumn>
+            <ActionColumn Title="Action">
+                <a @onclick="()=>{ HandleUpdate(row);}">Edit</a>
+                <Popconfirm Title="Are you sure?" OkText="确认" CancelText="取消" OnConfirm="async ()=>{await HandleDelete(row);}">
+                    <a>Delete</a>
+                </Popconfirm>
+            </ActionColumn>
+        </ColumnDefinitions>
+    </Table>
+}
 
 @code {
+
+    @inject IPostService _postService
+    @inject IOrganizationService _organizationService
+
+    private PageList<PostDto> _pageList;
+    private int _pageIndex = 1;
+    private int _pageSize = 10;
+
+
+    //对话框相关属性
+    private bool _visible = false;
+    private bool _confirmLoading = false;
+    private string _title = "";
+    private PostDto _entity;
+    private IEnumerable<long> bindOrganizationIds = new List<long>();
+
+    private List<OrganizationNodeDto> _organizations = new();
+    private List<OrganizationDto> _organizationList = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetOrganizationList();
+        await GetOrganizations();
+        await GetPageList();
+    }
+
+
+    protected async Task GetOrganizations()
+    {
+        var result = await _organizationService.All();
+        _organizations = result?.data ?? new List<OrganizationNodeDto>();
+    }
+
+    protected async Task GetOrganizationList()
+    {
+        var result = await _organizationService.List();
+        _organizationList = result?.data ?? new List<OrganizationDto>();
+    }
+
+    protected async Task GetPageList()
+    {
+        var result = await _postService.PageList(_pageIndex, _pageSize);
+        _pageList = result!.data;
+    }
+
+    private void HandleCreate(MouseEventArgs e)
+    {
+        _entity = new PostDto();
+        bindOrganizationIds = new List<long>();
+        _title = "新增";
+        _visible = true;
+
+    }
+
+    private void HandleUpdate(PostDto PostDto)
+    {
+        _entity = PostDto;
+        bindOrganizationIds = PostDto.organization_ids;
+        _title = "编辑";
+        _visible = true;
+    }
+
+    private async Task HandleDelete(PostDto roleDto)
+    {
+        await _postService.Delete(roleDto.id);
+        await GetPageList();
+    }
+
+
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        _confirmLoading = true;
+        StateHasChanged();
+
+        if (_title == "新增")
+        {
+            await _postService.Create(new Models.Request.CreatePostDto()
+                {
+                    name = _entity.name,
+                    code = _entity.code,
+                    organization_ids = bindOrganizationIds.ToList(),
+                });
+        }
+        else // 编辑
+        {
+            await _postService.Update(new Models.Request.UpdatePostDto()
+                {
+                    id = _entity.id,
+                    name = _entity.name,
+                    code = _entity.code,
+                    organization_ids = bindOrganizationIds.ToList(),
+                });
+        }
+
+        await GetPageList();
+        _visible = false;
+        _confirmLoading = false;
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        _visible = false;
+    }
 
 }

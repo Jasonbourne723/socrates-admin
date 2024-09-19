@@ -7,7 +7,8 @@ namespace Services
     {
         Task<Result<OrganizationDto>?> Create(CreateOrganizationDto dto);
         Task<Result?> Delete(long id);
-        Task<Result<List<OrganizationNodeDto>>?> List();
+        Task<Result<List<OrganizationNodeDto>>?> All();
         Task<Result<OrganizationDto>?> Update(UpdateOrganizationDto dto);
+        Task<Result<List<OrganizationDto>>?> List();
     }
 }

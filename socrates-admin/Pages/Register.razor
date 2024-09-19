@@ -6,33 +6,42 @@
 
 <PageTitle>注册</PageTitle>
 
-<dev class="back">
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-        <div>
-            <h3 style="text-align:center;margin:50px;">注册</h3>
-            <Form Model="@_registerDto"
-                  LabelColSpan="8"
-                  WrapperColSpan="16"
-                  OnFinish="ReigsterAsync">
-                <FormItem Label="手机号">
-                    <Input @bind-Value="@context.mobile" />
-                </FormItem>
-                <FormItem Label="名字">
-                    <Input @bind-Value="@context.name" />
-                </FormItem>
-                <FormItem Label="密码">
-                    <InputPassword @bind-Value="@context.password" />
-                </FormItem>
-
-                <Button Type="primary" HtmlType="submit" Class="submit" Size="large" Block>注&nbsp;册</Button>
-            </Form>
-        </div>
+<div class="back">
+    <div style="position: fixed; right: 10%; top: 50%; transform: translateY(-50%); padding:30px;">
+        <Card Bordered="true" Title=@("注册") Style="width:400px" Hoverable="true">
+            <Body>
+                <Form Model="@_registerDto"
+                      OnFinish="ReigsterAsync">
+                    <FormItem>
+                        <AntDesign.Input Placeholder="请输入手机号" Size="large" @bind-Value="@context.mobile">
+                            <Prefix><Icon Type="mobile" /></Prefix>
+                        </AntDesign.Input>
+                    </FormItem>
+                    <FormItem>
+                        <AntDesign.Input Placeholder="请输入名字" Size="large" @bind-Value="@context.name">
+                            <Prefix><Icon Type="user" /></Prefix>
+                        </AntDesign.Input>
+                    </FormItem>
+                    <FormItem>
+                        <InputPassword Placeholder="请输入密码" Size="large" @bind-Value="@context.password">
+                            <Prefix><Icon Type="key" /></Prefix>
+                        </InputPassword>
+                    </FormItem>
+                    <FormItem>
+                        <InputPassword Placeholder="请确认密码" Size="large" @bind-Value="@context.password2">
+                            <Prefix><Icon Type="key" /></Prefix>
+                        </InputPassword>
+                    </FormItem>
+                    <Button Type="primary" HtmlType="submit" Class="submit" Size="large" Block>注&nbsp;册</Button>
+                </Form>
+            </Body>
+        </Card>
     </div>
-</dev>
+</div>
 
 <style>
     .back {
-        background-image: url(Login.png);
+        background-image: url(back.jpg);
         background-size: cover; /* 背景图片会根据页面大小自动调整 */
         background-position: center; /* 背景图片居中显示 */
         background-repeat: no-repeat; /* 防止图片重复 */

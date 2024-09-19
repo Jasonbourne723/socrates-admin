@@ -8,7 +8,7 @@ namespace Services
     public class PostService : IPostService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _path = "/api/Post";
+        private readonly string _path = "/api/post";
 
         public PostService(HttpClient httpClient)
         {

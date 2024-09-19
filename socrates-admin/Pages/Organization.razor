@@ -20,29 +20,44 @@
         <FormItem Label="编号">
             <Input @bind-Value="@context.code" />
         </FormItem>
+        <FormItem Label="父部门">
+            <Select DataSource="@_list"
+                    TItem="OrganizationDto"
+                    TItemValue="long"
+                    ValueName="@nameof(OrganizationDto.id)"
+                    LabelName="@nameof(OrganizationDto.name)"
+            @bind-Value="@context.parent_id"
+                    Disabled>
+            </Select>
+        </FormItem>
     </Form>
 </Modal>
 <Row Gutter="16">
     <Col Span="8">
     <Card Bordered="false" Title=@("组织架构")>
+        <Extra>
+            <a href="javascript:void(0);" @onclick="()=>HandleCreateNode(0)">新建组织</a>
+        </Extra>
         <Body>
             <Tree DefaultExpandAll
                   Draggable
                   BlockNode
                   ShowIcon DataSource="_nodes"
-                   TitleExpression="x => x.DataItem.name"
+                   TitleExpression="x=>x.DataItem.name"
                    ChildrenExpression="x => x.DataItem.items"
                    IsLeafExpression="x => x.DataItem.items?.Count == 0"
                    KeyExpression="x => x.DataItem.id.ToString()"
+                   TitleTemplate="_titleTemplate"
                    TItem="OrganizationNodeDto">
+
              </Tree>
          </Body>
      </Card>
      </Col>
      <Col Span="16">
-     <Card Bordered="false" Title=@("Card title")>
+     <Card Bordered="false" Title=@("部门用户")>
          <Body>
-             <p>Card content</p>
+             <p>用户列表</p>
          </Body>
      </Card>
      </Col>
@@ -55,6 +70,8 @@
     @inject IOrganizationService _organizationService
 
     private List<OrganizationNodeDto> _nodes;
+    private List<OrganizationDto> _list;
+    private RenderFragment<TreeNode<OrganizationNodeDto>> _titleTemplate;
 
     private bool _visible = false;
     private string _title = "";
@@ -63,22 +80,50 @@
 
     protected async override Task OnInitializedAsync()
     {
+        InitTitleTemplate();
         await GetList();
         base.OnInitialized();
     }
 
     protected async Task GetList()
     {
-        var result = await _organizationService.List();
+        var result = await _organizationService.All();
         _nodes = result.data;
+
+        var listReuslt = await _organizationService.List();
+        _list = listReuslt.data;
     }
 
-    protected async Task HandleCreateNode()
+    protected async Task HandleCreateNode(long parentId)
     {
+        _organization = new OrganizationDto()
+                {
+                    parent_id = parentId
+                };
         _title = "新增部门";
         _visible = true;
     }
 
+    protected async Task HandleEditNode(OrganizationNodeDto dto)
+    {
+        _title = "编辑部门";
+        _visible = true;
+        _organization = new OrganizationDto
+                {
+                    code = dto.code,
+                    id = dto.id,
+                    name = dto.name,
+                    parent_id = dto.parent_id
+                };
+    }
+
+    protected async Task HandleDeleteNode(long id)
+    {
+        _confirmLoading = true;
+        await _organizationService.Delete(id);
+        await GetList();
+        _confirmLoading = false;
+    }
 
     private async Task HandleOk(MouseEventArgs e)
     {
@@ -93,7 +138,7 @@
         {
             await _organizationService.Update(_organization.Adapt<UpdateOrganizationDto>());
         }
-
+        _organization = new();
         await GetList();
         _visible = false;
         _confirmLoading = false;
@@ -103,4 +148,42 @@
     {
         _visible = false;
     }
+    private void InitTitleTemplate()
+    {
+        _titleTemplate = (TreeNode<OrganizationNodeDto> node) =>
+    {
+        return
+    @<div style="display: flex; justify-content: space-between; align-items: center;" >
+        <span>
+            @node.DataItem.name
+        </span>
+        <Dropdown>
+            <Overlay>
+                <Menu>
+                    <MenuItem>
+                        <a @onclick="async ea => {await HandleCreateNode(node.DataItem.id);}">
+                            新增子部门
+                        </a>
+                    </MenuItem>
+                    <MenuItem>
+                        <a @onclick="async ea=>{await HandleEditNode(node.DataItem);}">
+                            修改部门信息
+                        </a>
+                    </MenuItem>
+                    <MenuItem>
+                        <Popconfirm Title="Are you sure?" OkText="确认" CancelText="取消" OnConfirm="async ()=>{await HandleDeleteNode(node.DataItem.id);}">
+                            <a>删除部门</a>
+                        </Popconfirm>
+                    </MenuItem>
+                </Menu>
+            </Overlay>
+            <ChildContent>
+                <Icon Type="ellipsis" Theme="outline" />
+            </ChildContent>
+        </Dropdown>
+    </div>;
+    };
+
+    }
+
 }
