@@ -2,6 +2,11 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Models.Response;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Json;
+using Result = Models.Response.Result;
 
 namespace Extensions
 {
@@ -38,26 +43,88 @@ namespace Extensions
             {
                 var response = await base.SendAsync(request, cancellationToken);
 
-                // 在这里处理响应，例如统一错误处理
-                if (!response.IsSuccessStatusCode)
-                {
-                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    {
-                        _navigationManager.NavigateTo("/login", true);
-                    }
-                    else
-                    {
-                        await _messageService.Error($"接口访问失败：{response.StatusCode}");
-                    }
-                }
+                //// 在这里处理响应，例如统一错误处理
+                //if (!response.IsSuccessStatusCode)
+                //{
+                //    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                //    {
+                //        _navigationManager.NavigateTo("/login", true);
+                //    }
+                //    else
+                //    {
+                //        await _messageService.Error($"接口访问失败：{response.StatusCode}");
+                //    }
+                //}
                 return response;
+            }
+            catch (HttpRequestException ex)
+            {
+                return new HttpResponseMessage(System.Net.HttpStatusCode.ServiceUnavailable); // 返回一个有效响应，避免 null
+            }
+            catch (TaskCanceledException ex)
+            {
+                return new HttpResponseMessage(System.Net.HttpStatusCode.RequestTimeout);
             }
             catch (Exception ex)
             {
-                await _messageService.Error($"服务器连接失败");
-                return null;
+                return new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
             }
 
         }
     }
+
+
+    public class CustomHttpClient : ICustomHttpClient
+    {
+        private readonly HttpClient _httpClient;
+        private readonly IMessageService _messageService;
+        private readonly NavigationManager _navigationManager;
+
+        public CustomHttpClient(HttpClient httpClient, IMessageService messageService,NavigationManager navigationManager)
+        {
+            _httpClient = httpClient;
+            _messageService = messageService;
+            _navigationManager = navigationManager;
+        }
+
+        public async Task<T> GetAndHandleBusinessErrorAsync<T>(string requestUri)
+        {
+            var response = await _httpClient.GetAsync(requestUri);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _navigationManager.NavigateTo("/login", true);
+                }
+                else
+                {
+                    await _messageService.Error($"接口故障,{requestUri},{response.StatusCode}");
+                    return default(T);
+                }
+               
+            }
+            if (typeof(T) == typeof(Result))
+            {
+                var result = await response.Content.ReadFromJsonAsync<T>();
+
+                var res = result as Result;
+                if (res!.error_code != 0)
+                {
+                    await _messageService.Error($"接口返回失败,{requestUri},{res.message}");
+                }
+                return result;
+            }
+            else
+            {
+                var result = await response.Content.ReadFromJsonAsync<Result<T>>();
+
+                if (result!.error_code != 0)
+                {
+                    await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
+                }
+                return result.data;
+            }
+        }
+    }
+
 }

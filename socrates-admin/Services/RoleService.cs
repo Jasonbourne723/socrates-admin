@@ -1,4 +1,5 @@
-﻿using Models.Request;
+﻿using Extensions;
+using Models.Request;
 using Models.Response;
 using System.Net.Http.Json;
 
@@ -7,11 +8,13 @@ namespace Services
     public class RoleService : IRoleService
     {
         private readonly HttpClient _httpClient;
+        private readonly ICustomHttpClient _customHttpClient;
         private string _path;
 
-        public RoleService(HttpClient httpClient)
+        public RoleService(HttpClient httpClient,ICustomHttpClient customHttpClient)
         {
             _httpClient = httpClient;
+            _customHttpClient = customHttpClient;
             _path = $"/api/role";
         }
 
@@ -19,6 +22,11 @@ namespace Services
         {
             var path = $"{_path}/pagelist?page_index={pageIndex}&page_size={pageSize}";
             return await _httpClient.GetFromJsonAsync<Result<PageList<RoleDto>>>(path);
+        }
+
+        public async Task<List<RoleDto>?> List()
+        {
+            return await _customHttpClient.GetAndHandleBusinessErrorAsync<List<RoleDto>>(_path);
         }
 
         public async Task<Result<RoleDto>?> Create(CreateRoleDto dto)

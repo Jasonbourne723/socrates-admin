@@ -7,8 +7,8 @@ namespace Services
     {
         Task<Result<ApplicationDto>?> Create(CreateApplicationDto dto);
         Task<Result?> Delete(long roleId);
-        Task<Result<List<ApplicationDto>>?> List();
-        Task<Result<PageList<ApplicationDto>>?> PageList(int pageIndex, int pageSize);
+        Task<List<ApplicationDto>?> List();
+        Task<PageList<ApplicationDto>?> PageList(int pageIndex, int pageSize);
         Task<Result<ApplicationDto>?> Update(UpdateApplicationDto dto);
     }
 }

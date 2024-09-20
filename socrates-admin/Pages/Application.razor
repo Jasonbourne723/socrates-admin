@@ -76,8 +76,7 @@ else
 
     protected async Task GetPageList()
     {
-        var result = await _ApplicationService.PageList(_pageIndex, _pageSize);
-        _pageList = result!.data;
+        _pageList = await _ApplicationService.PageList(_pageIndex, _pageSize);
     }
 
     private void HandleCreate(MouseEventArgs e)

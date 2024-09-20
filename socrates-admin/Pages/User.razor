@@ -3,17 +3,242 @@
 
 <PageTitle>用户管理</PageTitle>
 
-<h1>Weather forecast</h1>
+@using Newtonsoft.Json;
+@using Services;
 
-<p>This component demonstrates fetching data from the server.</p>
+
+@if (_pageList == null)
+{
+    <p>loading</p>
+}
+else
+{
+    // 新增/编辑对话框
+    <Modal Title="@_title"
+           Visible="@_visible"
+           OnOk="@HandleOk"
+           OnCancel="@HandleCancel"
+           ConfirmLoading="@_confirmLoading">
+        <Form Model="@_entity"
+              LabelColSpan="8"
+              WrapperColSpan="16">
+            <FormItem Label="名称">
+                <Input @bind-Value="@context.name" />
+            </FormItem>
+            <FormItem Label="手机号">
+                <Input @bind-Value="@context.mobile" />
+            </FormItem>
+            <FormItem Label="部门">
+                <TreeSelect DataSource="_organizations"
+                            TitleExpression="node=>node.DataItem.name"
+                            TItem="OrganizationNodeDto"
+                            TItemValue="long"
+                            ItemValue="node=> node.id"
+                            KeyExpression="node=>node.DataItem.code"
+                            ChildrenExpression="node=>node.DataItem.items"
+                @bind-Value="@context.organization_id"
+                            Placeholder="Please select"
+                        AllowClear
+                        TreeDefaultExpandAll
+                        EnableSearch
+                            MatchedStyle="font-weight: bold" />
+            </FormItem>
+            <FormItem Label="职位">
+                <Select TItem="PostDto"
+                        TItemValue="long"
+                        DataSource="@_posts"
+                        ValueName="@nameof(PostDto.id)"
+                        LabelName="@nameof(PostDto.name)"
+                @bind-Value="@context.post_id"
+                    DefaultActiveFirstOption>
+            </Select>
+        </FormItem>
+        <FormItem Label="角色">
+            <Select TItem="RoleDto"
+                    Mode="multiple"
+                    TItemValue="long"
+                    DataSource="@_roles"
+                    ValueName="@nameof(RoleDto.id)"
+                    LabelName="@nameof(RoleDto.name)"
+            @bind-Values="@_roleIds"
+                    DefaultActiveFirstOption>
+            </Select>
+        </FormItem>
+    </Form>
+</Modal>
 
 
+
+    <Table TItem="UserDto" PageSize="5" Total="_pageList.TotalCount" DataSource="_pageList.Rows">
+        <TitleTemplate>
+            <Flex Justify="end" Gap="10">
+                <Button Type="primary" OnClick="HandleCreate">新增</Button>
+            </Flex>
+        </TitleTemplate>
+        <ColumnDefinitions Context="row">
+            <Selection />
+            <PropertyColumn Property="c=>c.name"></PropertyColumn>
+            <PropertyColumn Property="c=>c.mobile"></PropertyColumn>
+            <PropertyColumn Property="c=>c.organization_id">
+                @if (row.organization_id > 0)
+                {
+                    var organization = _organizationList.First(x => x.id == row.organization_id);
+                    <Tag Color="@("green")">@organization.name</Tag>
+                }
+            </PropertyColumn>
+            <PropertyColumn Property="c=>c.post_id">
+                @if (row.post_id > 0)
+                {
+                    var post = _posts.First(x => x.id == row.post_id);
+                    <Tag Color="@("red")">@post.name</Tag>
+                }
+            </PropertyColumn>
+            <PropertyColumn Property="c=>c.role_ids">
+                @if (row.role_ids != null && row.role_ids.Count > 0)
+                {
+                    foreach (var roleId in row.role_ids)
+                    {
+                        var role = _roles.FirstOrDefault(x => x.id == roleId);
+                        if (role != null)
+                        {
+                            <Tag Color="@("green")">@role.name</Tag>
+                        }
+                    }
+                }
+            </PropertyColumn>
+            <ActionColumn Title="Action">
+                <a @onclick="()=>{ HandleUpdate(row);}">Edit</a>
+                <Popconfirm Title="Are you sure?" OkText="确认" CancelText="取消" OnConfirm="async ()=>{await HandleDelete(row);}">
+                    <a>Delete</a>
+                </Popconfirm>
+            </ActionColumn>
+        </ColumnDefinitions>
+    </Table>
+}
 
 @code {
 
+    @inject IPostService _postService
+    @inject IOrganizationService _organizationService
+    @inject IUserService _userService
+    @inject IRoleService _roleService
+
+    private PageList<UserDto> _pageList;
+    private int _pageIndex = 1;
+    private int _pageSize = 10;
+
+
+    //对话框相关属性
+    private bool _visible = false;
+    private bool _confirmLoading = false;
+    private string _title = "";
+    private UserDto _entity;
+
+    private List<OrganizationNodeDto> _organizations = new();
+    private List<OrganizationDto> _organizationList = new();
+    private List<PostDto> _posts = new();
+    private List<RoleDto> _roles = new();
+    private IEnumerable<long> _roleIds = new List<long>();
+
+
     protected override async Task OnInitializedAsync()
     {
+        await GetPosts();
+        await GetRoles();
+        await GetOrganizationList();
+        await GetOrganizations();
+        await GetPageList();
+    }
+    protected async Task GetPosts()
+    {
+        var result = await _postService.List();
+        _posts = result?.data ?? new List<PostDto>();
     }
 
+    protected async Task GetRoles()
+    {
+        _roles = await _roleService.List() ?? new List<RoleDto>();
+    }
+
+    protected async Task GetOrganizations()
+    {
+        var result = await _organizationService.All();
+        _organizations = result?.data ?? new List<OrganizationNodeDto>();
+    }
+
+    protected async Task GetOrganizationList()
+    {
+        var result = await _organizationService.List();
+        _organizationList = result?.data ?? new List<OrganizationDto>();
+    }
+
+    protected async Task GetPageList()
+    {
+        var result = await _userService.PageList(_pageIndex, _pageSize);
+        _pageList = result!.data ?? new PageList<UserDto>();
+    }
+
+    private void HandleCreate(MouseEventArgs e)
+    {
+        _entity = new UserDto();
+        _roleIds = new List<long>();
+        _title = "新增";
+        _visible = true;
+
+    }
+
+    private void HandleUpdate(UserDto UserDto)
+    {
+        _entity = UserDto;
+        _roleIds = _entity.role_ids;
+        _title = "编辑";
+        _visible = true;
+    }
+
+    private async Task HandleDelete(UserDto roleDto)
+    {
+        await _postService.Delete(roleDto.id);
+        await GetPageList();
+    }
+
+
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        _confirmLoading = true;
+        StateHasChanged();
+
+        if (_title == "新增")
+        {
+            await _userService.Create(new Models.Request.CreateUserDto()
+                {
+                    name = _entity.name,
+                    mobile = _entity.mobile,
+                    organization_id = _entity.organization_id,
+                    post_id = _entity.post_id,
+                    role_ids = _roleIds.ToList()
+                });
+        }
+        else // 编辑
+        {
+            await _userService.Update(new Models.Request.UpdateUserDto()
+                {
+                    id = _entity.id,
+                    name = _entity.name,
+                    mobile = _entity.mobile,
+                    organization_id = _entity.organization_id,
+                    post_id = _entity.post_id,
+                    role_ids = _roleIds.ToList()
+                });
+        }
+
+        await GetPageList();
+        _visible = false;
+        _confirmLoading = false;
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        _visible = false;
+    }
 
 }

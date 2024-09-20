@@ -1,4 +1,5 @@
-﻿using Models.Request;
+﻿using Extensions;
+using Models.Request;
 using Models.Response;
 using System.IO;
 using System.Net.Http.Json;
@@ -8,22 +9,25 @@ namespace Services
     public class ApplicationService : IApplicationService
     {
         private readonly HttpClient _httpClient;
+        private readonly ICustomHttpClient _customHttpClient;
         private readonly string _path = "/api/application";
 
-        public ApplicationService(HttpClient httpClient)
+        public ApplicationService(HttpClient httpClient,
+                                  ICustomHttpClient customHttpClient)
         {
             _httpClient = httpClient;
+            _customHttpClient = customHttpClient;
         }
 
-        public async Task<Result<List<ApplicationDto>>?> List()
+        public async Task<List<ApplicationDto>?> List()
         {
-            return await _httpClient.GetFromJsonAsync<Result<List<ApplicationDto>>>(_path);
+            return await _customHttpClient.GetAndHandleBusinessErrorAsync<List<ApplicationDto>>(_path);
         }
 
-        public async Task<Result<PageList<ApplicationDto>>?> PageList(int pageIndex, int pageSize)
+        public async Task<PageList<ApplicationDto>?> PageList(int pageIndex, int pageSize)
         {
             var path = $"{_path}/pagelist?page_index={pageIndex}&page_size={pageSize}";
-            return await _httpClient.GetFromJsonAsync<Result<PageList<ApplicationDto>>>(path);
+            return await _customHttpClient.GetAndHandleBusinessErrorAsync<PageList<ApplicationDto>>(path);
         }
 
         public async Task<Result<ApplicationDto>?> Create(CreateApplicationDto dto)
