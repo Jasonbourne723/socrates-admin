@@ -87,8 +87,7 @@ else
 
     protected async Task GetPageList()
     {
-        var result = await _roleService.PageList(_pageIndex, _pageSize);
-        _pageList = result!.data;
+        _pageList = await _roleService.PageList(_pageIndex, _pageSize) ?? new PageList<RoleDto>();
     }
 
     private void HandleCreate(MouseEventArgs e)
@@ -149,8 +148,7 @@ else
 
     private async Task GetPermissionSpaces()
     {
-        var result = await _permissionSpaceService.List();
-        _permissionSpaceDtos = result.data;
+        _permissionSpaceDtos = await _permissionSpaceService.List() ?? new List<PermissionSpaceDto>();
     }
 
 }

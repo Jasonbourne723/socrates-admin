@@ -5,10 +5,10 @@ namespace Services
 {
     public interface IUserService
     {
-        Task<Result<UserDto>?> Create(CreateUserDto dto);
-        Task<Result?> Delete(long roleId);
-        Task<Result<List<UserDto>>?> List();
-        Task<Result<PageList<UserDto>>?> PageList(int pageIndex, int pageSize);
-        Task<Result<UserDto>?> Update(UpdateUserDto dto);
+        Task<UserDto?> Create(CreateUserDto dto);
+        Task Delete(long roleId);
+        Task<List<UserDto>?> List();
+        Task<PageList<UserDto>?> PageList(int pageIndex, int pageSize);
+        Task<UserDto?> Update(UpdateUserDto dto);
     }
 }

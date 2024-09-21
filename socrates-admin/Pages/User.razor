@@ -151,8 +151,7 @@ else
     }
     protected async Task GetPosts()
     {
-        var result = await _postService.List();
-        _posts = result?.data ?? new List<PostDto>();
+        _posts = await _postService.List() ?? new List<PostDto>();
     }
 
     protected async Task GetRoles()
@@ -162,20 +161,17 @@ else
 
     protected async Task GetOrganizations()
     {
-        var result = await _organizationService.All();
-        _organizations = result?.data ?? new List<OrganizationNodeDto>();
+        _organizations = await _organizationService.All() ?? new List<OrganizationNodeDto>();
     }
 
     protected async Task GetOrganizationList()
     {
-        var result = await _organizationService.List();
-        _organizationList = result?.data ?? new List<OrganizationDto>();
+        _organizationList = await _organizationService.List() ?? new List<OrganizationDto>();
     }
 
     protected async Task GetPageList()
     {
-        var result = await _userService.PageList(_pageIndex, _pageSize);
-        _pageList = result!.data ?? new PageList<UserDto>();
+        _pageList = await _userService.PageList(_pageIndex, _pageSize) ?? new PageList<UserDto>();
     }
 
     private void HandleCreate(MouseEventArgs e)

@@ -30,23 +30,20 @@ namespace Services
             return await _customHttpClient.GetAndHandleBusinessErrorAsync<PageList<ApplicationDto>>(path);
         }
 
-        public async Task<Result<ApplicationDto>?> Create(CreateApplicationDto dto)
+        public async Task<ApplicationDto> Create(CreateApplicationDto dto)
         {
-            var resposneMessage = await _httpClient.PostAsJsonAsync(_path, dto);
-            return await resposneMessage.Content.ReadFromJsonAsync<Result<ApplicationDto>>();
+            return await _customHttpClient.PostAndHandleBusinessErrorAsync<CreateApplicationDto, ApplicationDto>(_path, dto);
         }
 
-        public async Task<Result<ApplicationDto>?> Update(UpdateApplicationDto dto)
-        {
-            var resposneMessage = await _httpClient.PutAsJsonAsync(_path, dto);
-            return await resposneMessage.Content.ReadFromJsonAsync<Result<ApplicationDto>>();
-        }
-
-        public async Task<Result?> Delete(long roleId)
+        public async Task Delete(long roleId)
         {
             var path = $"{_path}/{roleId}";
-            var resposneMessage = await _httpClient.DeleteAsync(path);
-            return await resposneMessage.Content.ReadFromJsonAsync<Result>();
+            await _customHttpClient.DeleteAndHandleBusinessErrorAsync(path);
+        }
+
+        public async Task<ApplicationDto?> Update(UpdateApplicationDto dto)
+        {
+            return await _customHttpClient.PutAndHandleBusinessErrorAsync<UpdateApplicationDto, ApplicationDto>(_path, dto);
         }
     }
 

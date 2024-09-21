@@ -43,30 +43,30 @@
                   Draggable
                   BlockNode
                   ShowIcon DataSource="_nodes"
-                   TitleExpression="x=>x.DataItem.name"
-                   ChildrenExpression="x => x.DataItem.items"
-                   IsLeafExpression="x => x.DataItem.items?.Count == 0"
-                   KeyExpression="x => x.DataItem.id.ToString()"
-                   TitleTemplate="_titleTemplate"
-                   TItem="OrganizationNodeDto">
+                  TitleExpression="x=>x.DataItem.name"
+                  ChildrenExpression="x => x.DataItem.items"
+                  IsLeafExpression="x => x.DataItem.items?.Count == 0"
+                  KeyExpression="x => x.DataItem.id.ToString()"
+                  TitleTemplate="_titleTemplate"
+                  TItem="OrganizationNodeDto">
 
-             </Tree>
-         </Body>
-     </Card>
-     </Col>
-     <Col Span="16">
-     <Card Bordered="false" Title=@("部门用户")>
-         <Body>
-             <p>用户列表</p>
-         </Body>
-     </Card>
-     </Col>
- </Row>
-
-
+            </Tree>
+        </Body>
+    </Card>
+    </Col>
+    <Col Span="16">
+    <Card Bordered="false" Title=@("部门用户")>
+        <Body>
+            <p>用户列表</p>
+        </Body>
+    </Card>
+    </Col>
+</Row>
 
 
- @code {
+
+
+@code {
     @inject IOrganizationService _organizationService
 
     private List<OrganizationNodeDto> _nodes;
@@ -87,19 +87,17 @@
 
     protected async Task GetList()
     {
-        var result = await _organizationService.All();
-        _nodes = result.data;
+        _nodes = await _organizationService.All() ?? new List<OrganizationNodeDto>();
 
-        var listReuslt = await _organizationService.List();
-        _list = listReuslt.data;
+        _list = await _organizationService.List() ?? new List<OrganizationDto>();
     }
 
     protected async Task HandleCreateNode(long parentId)
     {
         _organization = new OrganizationDto()
-                {
-                    parent_id = parentId
-                };
+                    {
+                        parent_id = parentId
+                    };
         _title = "新增部门";
         _visible = true;
     }
@@ -109,12 +107,12 @@
         _title = "编辑部门";
         _visible = true;
         _organization = new OrganizationDto
-                {
-                    code = dto.code,
-                    id = dto.id,
-                    name = dto.name,
-                    parent_id = dto.parent_id
-                };
+                    {
+                        code = dto.code,
+                        id = dto.id,
+                        name = dto.name,
+                        parent_id = dto.parent_id
+                    };
     }
 
     protected async Task HandleDeleteNode(long id)
@@ -151,13 +149,13 @@
     private void InitTitleTemplate()
     {
         _titleTemplate = (TreeNode<OrganizationNodeDto> node) =>
-    {
-        return
-    @<div style="display: flex; justify-content: space-between; align-items: center;" >
+            {
+    return
+    @<div style="display: flex; justify-content: space-between; align-items: center;">
         <span>
             @node.DataItem.name
         </span>
-        <Dropdown >
+        <Dropdown>
             <Overlay>
                 <Menu>
                     <MenuItem>
@@ -182,7 +180,7 @@
             </ChildContent>
         </Dropdown>
     </div>;
-    };
+        };
 
     }
 

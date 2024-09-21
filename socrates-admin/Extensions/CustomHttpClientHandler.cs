@@ -80,7 +80,7 @@ namespace Extensions
         private readonly IMessageService _messageService;
         private readonly NavigationManager _navigationManager;
 
-        public CustomHttpClient(HttpClient httpClient, IMessageService messageService,NavigationManager navigationManager)
+        public CustomHttpClient(HttpClient httpClient, IMessageService messageService, NavigationManager navigationManager)
         {
             _httpClient = httpClient;
             _messageService = messageService;
@@ -101,30 +101,142 @@ namespace Extensions
                     await _messageService.Error($"接口故障,{requestUri},{response.StatusCode}");
                     return default(T);
                 }
-               
-            }
-            if (typeof(T) == typeof(Result))
-            {
-                var result = await response.Content.ReadFromJsonAsync<T>();
 
-                var res = result as Result;
-                if (res!.error_code != 0)
-                {
-                    await _messageService.Error($"接口返回失败,{requestUri},{res.message}");
-                }
-                return result;
             }
-            else
-            {
-                var result = await response.Content.ReadFromJsonAsync<Result<T>>();
+            var result = await response.Content.ReadFromJsonAsync<Result<T>>();
 
-                if (result!.error_code != 0)
-                {
-                    await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
-                }
-                return result.data;
+            if (result!.error_code != 0)
+            {
+                await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
             }
+            return result.data;
         }
+
+        public async Task<TResult> PostAndHandleBusinessErrorAsync<TRequst, TResult>(string requestUri, TRequst requst)
+        {
+            var response = await _httpClient.PostAsJsonAsync<TRequst>(requestUri, requst);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _navigationManager.NavigateTo("/login", true);
+                }
+                else
+                {
+                    await _messageService.Error($"接口故障,{requestUri},{response.StatusCode}");
+                    return default(TResult);
+                }
+
+            }
+            var result = await response.Content.ReadFromJsonAsync<Result<TResult>>();
+
+            if (result!.error_code != 0)
+            {
+                await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
+            }
+            return result.data;
+        }
+
+        public async Task PostAndHandleBusinessErrorAsync<TRequst>(string requestUri, TRequst requst)
+        {
+            var response = await _httpClient.PostAsJsonAsync<TRequst>(requestUri, requst);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _navigationManager.NavigateTo("/login", true);
+                }
+                else
+                {
+                    await _messageService.Error($"接口故障,{requestUri},{response.StatusCode}");
+                    return;
+                }
+
+            }
+            var result = await response.Content.ReadFromJsonAsync<Result>();
+
+            if (result!.error_code != 0)
+            {
+                await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
+            }
+            return;
+        }
+
+        public async Task<TResult> PutAndHandleBusinessErrorAsync<TRequst, TResult>(string requestUri, TRequst requst)
+        {
+            var response = await _httpClient.PutAsJsonAsync<TRequst>(requestUri, requst);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _navigationManager.NavigateTo("/login", true);
+                }
+                else
+                {
+                    await _messageService.Error($"接口故障,{requestUri},{response.StatusCode}");
+                    return default(TResult);
+                }
+
+            }
+            var result = await response.Content.ReadFromJsonAsync<Result<TResult>>();
+
+            if (result!.error_code != 0)
+            {
+                await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
+            }
+            return result.data;
+        }
+
+        public async Task PutAndHandleBusinessErrorAsync<TRequst>(string requestUri, TRequst requst)
+        {
+            var response = await _httpClient.PutAsJsonAsync<TRequst>(requestUri, requst);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _navigationManager.NavigateTo("/login", true);
+                }
+                else
+                {
+                    await _messageService.Error($"接口故障,{requestUri},{response.StatusCode}");
+                    return;
+                }
+
+            }
+            var result = await response.Content.ReadFromJsonAsync<Result>();
+
+            if (result!.error_code != 0)
+            {
+                await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
+            }
+            return;
+        }
+
+        public async Task DeleteAndHandleBusinessErrorAsync(string requestUri)
+        {
+            var response = await _httpClient.DeleteAsync(requestUri);
+            if (!response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _navigationManager.NavigateTo("/login", true);
+                }
+                else
+                {
+                    await _messageService.Error($"接口故障,{requestUri},{response.StatusCode}");
+                    return;
+                }
+
+            }
+            var result = await response.Content.ReadFromJsonAsync<Result>();
+
+            if (result!.error_code != 0)
+            {
+                await _messageService.Error($"接口返回失败,{requestUri},{result.message}");
+            }
+            return;
+        }
+
     }
 
 }

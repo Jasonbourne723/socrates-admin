@@ -1,27 +1,26 @@
 ﻿using Extensions;
 using Models.Request;
 using Models.Response;
+using System.IO;
 using System.Net.Http.Json;
 
 namespace Services
 {
     public class RoleService : IRoleService
     {
-        private readonly HttpClient _httpClient;
         private readonly ICustomHttpClient _customHttpClient;
         private string _path;
 
-        public RoleService(HttpClient httpClient,ICustomHttpClient customHttpClient)
+        public RoleService(ICustomHttpClient customHttpClient)
         {
-            _httpClient = httpClient;
             _customHttpClient = customHttpClient;
             _path = $"/api/role";
         }
 
-        public async Task<Result<PageList<RoleDto>>?> PageList(int pageIndex, int pageSize)
+        public async Task<PageList<RoleDto>?> PageList(int pageIndex, int pageSize)
         {
             var path = $"{_path}/pagelist?page_index={pageIndex}&page_size={pageSize}";
-            return await _httpClient.GetFromJsonAsync<Result<PageList<RoleDto>>>(path);
+            return await _customHttpClient.GetAndHandleBusinessErrorAsync<PageList<RoleDto>>(path);
         }
 
         public async Task<List<RoleDto>?> List()
@@ -29,23 +28,20 @@ namespace Services
             return await _customHttpClient.GetAndHandleBusinessErrorAsync<List<RoleDto>>(_path);
         }
 
-        public async Task<Result<RoleDto>?> Create(CreateRoleDto dto)
+        public async Task<RoleDto?> Create(CreateRoleDto dto)
         {
-            var resposneMessage = await _httpClient.PostAsJsonAsync(_path, dto);
-            return await resposneMessage.Content.ReadFromJsonAsync<Result<RoleDto>>();
+            return await _customHttpClient.PostAndHandleBusinessErrorAsync<CreateRoleDto, RoleDto>(_path, dto);
         }
 
-        public async Task<Result<RoleDto>?> Update(UpdateRoleDto dto)
+        public async Task<RoleDto?> Update(UpdateRoleDto dto)
         {
-            var resposneMessage = await _httpClient.PutAsJsonAsync(_path, dto);
-            return await resposneMessage.Content.ReadFromJsonAsync<Result<RoleDto>>();
+            return await _customHttpClient.PutAndHandleBusinessErrorAsync<UpdateRoleDto, RoleDto>(_path, dto);
         }
 
-        public async Task<Result?> Delete(long roleId)
+        public async Task Delete(long roleId)
         {
             var path = $"{_path}/{roleId}";
-            var resposneMessage = await _httpClient.DeleteAsync(path);
-            return await resposneMessage.Content.ReadFromJsonAsync<Result>();
+            await _customHttpClient.DeleteAndHandleBusinessErrorAsync(path);
         }
     }
 

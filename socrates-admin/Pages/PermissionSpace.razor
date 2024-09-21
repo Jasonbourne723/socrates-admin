@@ -76,8 +76,7 @@ else
 
     protected async Task GetPageList()
     {
-        var result = await _permissionSpaceService.PageList(_pageIndex, _pageSize);
-        _pageList = result!.data;
+        _pageList = await _permissionSpaceService.PageList(_pageIndex, _pageSize) ?? new PageList<PermissionSpaceDto>();
     }
 
     private void HandleCreate(MouseEventArgs e)
