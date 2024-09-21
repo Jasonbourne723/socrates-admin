@@ -6,7 +6,7 @@
 
 @if (_pageList == null)
 {
-    <p>loading</p>
+    <Spin size="large" />
 }
 else
 {
@@ -28,7 +28,7 @@ else
 
             <FormItem Label="权限空间">
                 <Select TItem="PermissionSpaceDto"
-                        TItemValue="int"
+                        TItemValue="long"
                         DataSource="@_permissionSpaceDtos"
                         ValueName="@nameof(PermissionSpaceDto.id)"
                         LabelName="@nameof(PermissionSpaceDto.name)"

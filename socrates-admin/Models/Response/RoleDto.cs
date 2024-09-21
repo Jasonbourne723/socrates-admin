@@ -11,7 +11,7 @@ namespace Models.Response
         [DisplayName("编号")]
         public string code { get; set; }
 
-        public int permission_space_id { get; set; }
+        public long permission_space_id { get; set; }
     }
 
 }

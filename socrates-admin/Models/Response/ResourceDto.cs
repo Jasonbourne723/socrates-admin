@@ -18,8 +18,8 @@ namespace Models.Response
         public long permission_space_id { get; set; }
         [DisplayName("类别")]
         public short category { get; set; }
-        public List<ResourceItemsDto> Items { get; set; }
+        public List<ResourceItemsDto> items { get; set; } = new List<ResourceItemsDto>();
 
-        public List<string> actions { get; set; }
+        public List<string> actions { get; set; } = new List<string>();
     }
 }

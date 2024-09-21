@@ -13,14 +13,24 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddAntDesign();
 
+
+
 builder.Services.AddBlazoredLocalStorageAsSingleton();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IOrganizationService, OrganizationService>();
-builder.Services.AddScoped<IPermissionSpaceService, PermissionSpaceService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IApplicationService, ApplicationService>();
-builder.Services.AddScoped<IPostService, PostService>();
+
+
+builder.Services.Scan(scan => scan
+        .FromAssemblyOf<Program>()
+        .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")))
+        .AsImplementedInterfaces()
+        .WithScopedLifetime());
+
+//builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<IAuthService, AuthService>();
+//builder.Services.AddScoped<IOrganizationService, OrganizationService>();
+//builder.Services.AddScoped<IPermissionSpaceService, PermissionSpaceService>();
+//builder.Services.AddScoped<IRoleService, RoleService>();
+//builder.Services.AddScoped<IApplicationService, ApplicationService>();
+//builder.Services.AddScoped<IPostService, PostService>();
 
 
 builder.Services.AddScoped(sp =>

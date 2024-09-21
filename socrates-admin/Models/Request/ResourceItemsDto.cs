@@ -11,7 +11,9 @@
 
         public string value { get; set; }
 
-        public List<ResourceItemsDto> Items { get; set; }
+        public string parent_name { get; set; }
+
+        public List<ResourceItemsDto> items { get; set; } = new List<ResourceItemsDto>();
     }
 
 

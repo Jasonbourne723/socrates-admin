@@ -29,7 +29,7 @@ namespace Services
 
         public async Task Delete(long id)
         {
-            await _customHttpClient.DeleteAndHandleBusinessErrorAsync($"_path/{id}");
+            await _customHttpClient.DeleteAndHandleBusinessErrorAsync($"{_path}/{id}");
         }
 
         public async Task<List<PermissionSpaceDto>> List()

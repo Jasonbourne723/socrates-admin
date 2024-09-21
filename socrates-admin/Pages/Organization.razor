@@ -5,65 +5,65 @@
 
 <PageTitle>组织架构</PageTitle>
 
+<div>
+    <Modal Title="@_title"
+           Visible="@_visible"
+           OnOk="@HandleOk"
+           OnCancel="@HandleCancel"
+           ConfirmLoading="@_confirmLoading">
+        <Form Model="@_organization"
+              LabelColSpan="8"
+              WrapperColSpan="16">
+            <FormItem Label="名称">
+                <Input @bind-Value="@context.name" />
+            </FormItem>
+            <FormItem Label="编号">
+                <Input @bind-Value="@context.code" />
+            </FormItem>
+            <FormItem Label="父部门">
+                <Select DataSource="@_list"
+                        TItem="OrganizationDto"
+                        TItemValue="long"
+                        ValueName="@nameof(OrganizationDto.id)"
+                        LabelName="@nameof(OrganizationDto.name)"
+                @bind-Value="@context.parent_id"
+                        Disabled>
+                </Select>
+            </FormItem>
+        </Form>
+    </Modal>
 
-<Modal Title="@_title"
-       Visible="@_visible"
-       OnOk="@HandleOk"
-       OnCancel="@HandleCancel"
-       ConfirmLoading="@_confirmLoading">
-    <Form Model="@_organization"
-          LabelColSpan="8"
-          WrapperColSpan="16">
-        <FormItem Label="名称">
-            <Input @bind-Value="@context.name" />
-        </FormItem>
-        <FormItem Label="编号">
-            <Input @bind-Value="@context.code" />
-        </FormItem>
-        <FormItem Label="父部门">
-            <Select DataSource="@_list"
-                    TItem="OrganizationDto"
-                    TItemValue="long"
-                    ValueName="@nameof(OrganizationDto.id)"
-                    LabelName="@nameof(OrganizationDto.name)"
-            @bind-Value="@context.parent_id"
-                    Disabled>
-            </Select>
-        </FormItem>
-    </Form>
-</Modal>
-<Row Gutter="16">
-    <Col Span="8">
-    <Card Bordered="false" Title=@("组织架构")>
-        <Extra>
-            <a href="javascript:void(0);" @onclick="()=>HandleCreateNode(0)">新建组织</a>
-        </Extra>
-        <Body>
-            <Tree DefaultExpandAll
-                  Draggable
-                  BlockNode
-                  ShowIcon DataSource="_nodes"
-                  TitleExpression="x=>x.DataItem.name"
-                  ChildrenExpression="x => x.DataItem.items"
-                  IsLeafExpression="x => x.DataItem.items?.Count == 0"
-                  KeyExpression="x => x.DataItem.id.ToString()"
-                  TitleTemplate="_titleTemplate"
-                  TItem="OrganizationNodeDto">
+    <Row Gutter="16">
+        <Col Span="8">
+        <Card Bordered="false" Title=@("组织架构")>
+            <Extra>
+                <a href="javascript:void(0);" @onclick="()=>HandleCreateNode(0)">新建组织</a>
+            </Extra>
+            <Body>
+                <Tree DefaultExpandAll
+                      Draggable
+                      BlockNode
+                      ShowIcon DataSource="_nodes"
+                      TitleExpression="x=>x.DataItem.name"
+                      ChildrenExpression="x => x.DataItem.items"
+                      IsLeafExpression="x => x.DataItem.items?.Count == 0"
+                      KeyExpression="x => x.DataItem.id.ToString()"
+                      TitleTemplate="_titleTemplate"
+                      TItem="OrganizationNodeDto">
 
-            </Tree>
-        </Body>
-    </Card>
-    </Col>
-    <Col Span="16">
-    <Card Bordered="false" Title=@("部门用户")>
-        <Body>
-            <p>用户列表</p>
-        </Body>
-    </Card>
-    </Col>
-</Row>
-
-
+                </Tree>
+            </Body>
+        </Card>
+        </Col>
+        <Col Span="16">
+        <Card Bordered="false" Title=@("部门用户")>
+            <Body>
+                <p>用户列表</p>
+            </Body>
+        </Card>
+        </Col>
+    </Row>
+</div>
 
 
 @code {
@@ -95,9 +95,9 @@
     protected async Task HandleCreateNode(long parentId)
     {
         _organization = new OrganizationDto()
-                    {
-                        parent_id = parentId
-                    };
+                                {
+                                    parent_id = parentId
+                                };
         _title = "新增部门";
         _visible = true;
     }
@@ -107,12 +107,12 @@
         _title = "编辑部门";
         _visible = true;
         _organization = new OrganizationDto
-                    {
-                        code = dto.code,
-                        id = dto.id,
-                        name = dto.name,
-                        parent_id = dto.parent_id
-                    };
+                                {
+                                    code = dto.code,
+                                    id = dto.id,
+                                    name = dto.name,
+                                    parent_id = dto.parent_id
+                                };
     }
 
     protected async Task HandleDeleteNode(long id)
@@ -149,7 +149,7 @@
     private void InitTitleTemplate()
     {
         _titleTemplate = (TreeNode<OrganizationNodeDto> node) =>
-            {
+                        {
     return
     @<div style="display: flex; justify-content: space-between; align-items: center;">
         <span>
@@ -180,7 +180,7 @@
             </ChildContent>
         </Dropdown>
     </div>;
-        };
+                    };
 
     }
 

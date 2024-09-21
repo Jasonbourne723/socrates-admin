@@ -1,0 +1,102 @@
+﻿@page "/resources"
+@using Newtonsoft.Json;
+@using Services;
+
+<PageTitle>资源管理</PageTitle>
+
+@if (_pageList == null)
+{
+    <Spin size="large" />
+}
+else
+{
+    <Table TItem="ResourceDto" PageSize="5" Total="_pageList.TotalCount" DataSource="_pageList.Rows">
+        <TitleTemplate>
+            <Flex Justify="end" Gap="10">
+                <Button Type="primary" OnClick="HandleCreate">新增</Button>
+            </Flex>
+        </TitleTemplate>
+        <ColumnDefinitions Context="row">
+            <Selection />
+            <PropertyColumn Property="x=>x.id"></PropertyColumn>
+            <PropertyColumn Property="x=>x.name"></PropertyColumn>
+            <PropertyColumn Property="x=>x.code"></PropertyColumn>
+            <PropertyColumn Property="x=>x.permission_space_id">
+                @if (row.permission_space_id > 0)
+                {
+                    var permissionSpace = _permissionSpaceDtos.FirstOrDefault(x => x.id == row.permission_space_id);
+                    if (permissionSpace != null)
+                    {
+                        <Tag Color="red">@permissionSpace.name</Tag>
+                    }
+                }
+            </PropertyColumn>
+            <PropertyColumn Property="x=>x.description"></PropertyColumn>
+            <PropertyColumn Property="x=>x.category">
+                @if (row.category == 1)
+                {
+                    <span>树型</span>
+                }
+                else
+                {
+                    <span>数组</span>
+                }
+
+            </PropertyColumn>
+            <ActionColumn Title="Action">
+                <a @onclick="()=>{ HandleUpdate(row);}">Edit</a>
+                <Popconfirm Title="Are you sure?" OkText="确认" CancelText="取消" OnConfirm="async ()=>{await HandleDelete(row);}">
+                    <a>Delete</a>
+                </Popconfirm>
+            </ActionColumn>
+        </ColumnDefinitions>
+    </Table>
+}
+
+@code {
+
+    @inject IResourceService _ResourceService
+    @inject IPermissionSpaceService _permissionSpaceService
+    @inject NavigationManager navigationManager
+
+    private PageList<ResourceDto> _pageList;
+    private int _pageIndex = 1;
+    private int _pageSize = 10;
+
+
+    private List<PermissionSpaceDto> _permissionSpaceDtos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPermissionSpaces();
+        await GetPageList();
+    }
+
+    protected async Task GetPageList()
+    {
+        _pageList = await _ResourceService.PageList(_pageIndex, _pageSize) ?? new PageList<ResourceDto>();
+    }
+
+    private void HandleCreate(MouseEventArgs e)
+    {
+        navigationManager.NavigateTo("/edit_resource/0", false);
+    }
+
+    private void HandleUpdate(ResourceDto resource)
+    {
+        navigationManager.NavigateTo($"/edit_resource/{resource.id}", false);
+    }
+
+    private async Task HandleDelete(ResourceDto ResourceDto)
+    {
+        await _ResourceService.Delete(ResourceDto.id);
+        await GetPageList();
+    }
+
+
+    private async Task GetPermissionSpaces()
+    {
+        _permissionSpaceDtos = await _permissionSpaceService.List() ?? new List<PermissionSpaceDto>();
+    }
+
+}

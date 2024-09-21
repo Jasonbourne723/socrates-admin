@@ -1,8 +1,231 @@
-﻿@page "/resource"
+﻿@page "/edit_resource/{resourceId:long}"
+@using Mapster;
+@using Models.Request;
+@using Services;
 
-<PageTitle>资源管理</PageTitle>
+<PageTitle>编辑资源</PageTitle>
+
+<div>
+    <Drawer Closable="true" Visible="_visible" Title='("编辑节点")'>
+        <Form Model="@_item"
+              LabelColSpan="8"
+              WrapperColSpan="16">
+            <FormItem Label="父节点">
+                <Input @bind-Value="@context.parent_name" Disabled />
+            </FormItem>
+            <FormItem Label="名称">
+                <Input @bind-Value="@context.name" />
+            </FormItem>
+            <FormItem Label="编号">
+                <Input @bind-Value="@context.code" />
+            </FormItem>
+            <FormItem Label="值">
+                <Input @bind-Value="@context.value" />
+            </FormItem>
+            <FormItem WrapperColOffset="8" WrapperColSpan="16">
+                <Button Type="@ButtonType.Primary" HtmlType="submit" @onclick="()=>{saveNode();}">
+                    保存
+                </Button>
+            </FormItem>
+        </Form>
+    </Drawer>
+
+    <Card Bordered="true">
+
+        <Form Model="@_resource"
+              LabelColSpan="8"
+              WrapperColSpan="8">
+            <FormItem Label="名称">
+                <Input @bind-Value="@context.name" />
+            </FormItem>
+            <FormItem Label="编号">
+                <Input @bind-Value="@context.code" />
+            </FormItem>
+
+            <FormItem Label="描述">
+                <Input @bind-Value="@context.description" />
+            </FormItem>
+            <FormItem Label="权限空间">
+                <Select TItem="PermissionSpaceDto"
+                        TItemValue="long"
+                        DataSource="@_permissionSpaces"
+                        ValueName="@nameof(PermissionSpaceDto.id)"
+                        LabelName="@nameof(PermissionSpaceDto.name)"
+                @bind-Value="@_resource.permission_space_id"
+                        DefaultActiveFirstOption>
+                </Select>
+            </FormItem>
+            <FormItem Label="类别">
+                <RadioGroup @bind-Value="@context.category" TValue="short">
+                    <Radio Value="1" TValue="short">树型</Radio>
+                    <Radio Value="2" TValue="short">数组</Radio>
+                </RadioGroup>
+            </FormItem>
+            <FormItem Label="资源明细">
+                @if (_resource.category == 1)
+                {
+                    <Table DataSource="_items" TreeChildren="item=>item.items" Context="c">
+                        <PropertyColumn Property="c=>c.name" />
+                        <PropertyColumn Property="c=>c.code" Width="12%" Sortable />
+                        <PropertyColumn Property="c=>c.value" Width="30%" />
+                        <ActionColumn>
+                            <Button OnClick="@(()=>HandleEditNode(c))">编辑节点</Button>
+                            <Button OnClick="@(()=>HandleDeleteNode(c))">删除节点</Button>
+                            <Button OnClick="@(()=>HandleCreateNode(c))">新增子节点</Button>
+                        </ActionColumn>
+                    </Table>
+                }
+                else
+                {
+                    <Table DataSource="_items"  Context="c">
+                        <PropertyColumn Property="c=>c.name" />
+                        <PropertyColumn Property="c=>c.code" Width="12%" Sortable />
+                        <PropertyColumn Property="c=>c.value" Width="30%" />
+                        <ActionColumn>
+                            <Button OnClick="@(()=>HandleEditNode(c))">编辑节点</Button>
+                            <Button OnClick="@(()=>HandleDeleteNode(c))">删除节点</Button>
+                        </ActionColumn>
+                    </Table>
+                }
+                <a href="javascript:void(0);" @onclick="()=>{HandleCreateNode(null);}">添加节点</a>
+            </FormItem>
+            <FormItem Label="资源操作">
+                <Row>
+                    <Input @bind-Value="_action" Width="200px" OnPressEnter="()=>{ AddAction();}"></Input>
+                    <Button Type="@ButtonType.Primary" @onclick="()=>{ AddAction();}">新增</Button>
+                </Row>
+                <p></p>
+                <Row>
+                    @foreach (var item in _resource.actions)
+                    {
+                        <Tag @key="item" Closable OnClose="()=>OnActionClose(item)">@item</Tag>
+                    }
+                </Row>
+            </FormItem>
+            <FormItem WrapperColOffset="8" WrapperColSpan="16">
+                <Button Type="@ButtonType.Primary" @onclick="async ()=>{ await SaveResource();}">保存</Button>
+            </FormItem>
+        </Form>
+    </Card>
+</div>
 
 
 @code {
+    @inject IPermissionSpaceService _permissionSpaceService
+    @inject IResourceService _resourceService
+    @inject IMessageService _messageService
+    @inject NavigationManager _navigationManager
 
+    [Parameter]
+    public long resourceId { get; set; }
+
+    private ResourceDto _resource = new();
+    private List<PermissionSpaceDto> _permissionSpaces = new();
+    private IEnumerable<ResourceItemsDto> _items = new List<ResourceItemsDto>();
+
+    private string _action = "";
+    private bool _visible = false;
+    private ResourceItemsDto _item = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _permissionSpaces = await _permissionSpaceService.List();
+        if (resourceId > 0)
+        {
+            _resource = await _resourceService.GetOne(resourceId);
+            _items = _resource.items ?? new List<ResourceItemsDto>();
+        }
+        await base.OnInitializedAsync();
+    }
+
+    private async Task SaveResource()
+    {
+        _resource.items = _items.ToList();
+        if (_resource.id == 0)
+        {
+            await _resourceService.Create(_resource.Adapt<CreateResourceDto>());
+        }
+        else
+        {
+            await _resourceService.Update(_resource.Adapt<UpdateResourceDto>());
+        }
+        _navigationManager.NavigateTo("/resources", false);
+    }
+
+
+    private void saveNode()
+    {
+        _item = new();
+        _visible = false;
+    }
+
+
+    private void HandleCreateNode(ResourceItemsDto parentItem)
+    {
+        _visible = true;
+        var item = new ResourceItemsDto();
+        if (parentItem == null)
+        {
+            var list = _items.ToList();
+            list.Add(item);
+            _items = list;
+        }
+        else
+        {
+            parentItem.items = parentItem.items ?? new List<ResourceItemsDto>();
+            parentItem.items.Add(item);
+            item.parent_name = parentItem.name;
+        }
+        _item = item;
+    }
+
+    private void HandleEditNode(ResourceItemsDto parentItem)
+    {
+        _visible = true;
+        _item = parentItem;
+    }
+
+    private void HandleDeleteNode(ResourceItemsDto deleteNode)
+    {
+        var items = _items.ToList();
+        DeleteNode(items, deleteNode);
+        _items = items;
+    }
+
+    private void DeleteNode(List<ResourceItemsDto> sourceItems, ResourceItemsDto deleteNode)
+    {
+        if (sourceItems != null && sourceItems.Count > 0)
+        {
+            for (int i = sourceItems.Count - 1; i >= 0; i--)
+            {
+                if (sourceItems[i].code == deleteNode.code)
+                {
+                    sourceItems.RemoveAt(i);
+                }
+                else
+
+                {
+                    DeleteNode(sourceItems[i].items, deleteNode);
+                }
+            }
+        }
+    }
+
+    private void OnActionClose(string action)
+    {
+        _resource.actions.Remove(action);
+    }
+
+    private void AddAction()
+    {
+        if (!_resource.actions.Contains(_action))
+        {
+            _resource.actions.Add(_action);
+            _action = "";
+        }
+        else
+        {
+            _messageService.Warning("名称重复");
+        }
+    }
 }
