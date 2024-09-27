@@ -2,8 +2,25 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div class="site-statistic-demo-card">
+    <Row Gutter="16">
+        <Col Span="12">
+        <Card>
+            <Statistic Title="应用数量" Value="11.28" Precision="2" ValueStyle="color: #3f8600;" Suffix="%">
+                <PrefixTemplate>
+                    <span><Icon Type="arrow-up" /></span>
+                </PrefixTemplate>
+            </Statistic>
+        </Card>
+        </Col>
+        <Col Span="12">
+        <Card>
+            <Statistic Title="用户数量" Value="9.3" Precision="2" ValueStyle="color: #cf1322;" Suffix="%">
+                <PrefixTemplate>
+                    <span><Icon Type="arrow-down" /></span>
+                </PrefixTemplate>
+            </Statistic>
+        </Card>
+        </Col>
+    </Row>
+</div>

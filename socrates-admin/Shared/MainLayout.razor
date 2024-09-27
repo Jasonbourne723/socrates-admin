@@ -7,7 +7,10 @@
                                  Layout="AntDesign.ProLayout.Layout.Side"
                                  PrimaryColor="daybreak"
                                  FixedHeader="true"
-                                 MenuHeaderRender="true" HeaderHeight="48" MenuRender="true" SplitMenus="false">
+                                 MenuHeaderRender="true" HeaderHeight="48" MenuRender="true" SplitMenus="false" Class="custom-container">
+    <RightContentRender>
+        <RightLayout />
+    </RightContentRender>
     <ChildContent>
         @Body
     </ChildContent>
@@ -25,6 +28,10 @@
         position: relative;
         top: -2.9px;
     }
+
+    .custom-container .ant-layout .ant-pro-sider .ant-menu-submenu .ant-menu-item a {
+        text-decoration: none
+    }
 </style>
 
 @code
@@ -34,10 +41,18 @@
         new MenuDataItem
         {
             Path = "/",
-            Name = "首页",
-            Key = "home",
-            Icon = "home"
-
+            Name = "仪表板",
+            Key = "Dashborad",
+            Icon = "home",
+            Children =new MenuDataItem[]
+            {
+                new MenuDataItem
+                {
+                    Path = "/",
+                    Name = "首页",
+                    Key = "home"
+                }
+            }
         },
         new MenuDataItem
         {
@@ -50,23 +65,20 @@
                 {
                     Path = "/user",
                     Name = "用户列表",
-                    Key = "user",
-                     Icon = "user",
+                    Key = "user"
                 },
                  new MenuDataItem
                 {
                     Path = "/organization",
                     Name = "组织架构",
-                    Key = "organization",
-                    Icon = "apartment"
+                    Key = "organization"
 
                 },
                  new MenuDataItem
                 {
                     Path = "/post",
                     Name = "职位管理",
-                    Key = "post",
-                    Icon = "usb"
+                    Key = "post"
                 },
           }
         },
@@ -81,29 +93,25 @@
                 {
                     Path = "/permission_space",
                     Name = "权限空间",
-                    Key = "permission_space",
-                    Icon = "lock"
+                    Key = "permission_space"
                 },
                  new MenuDataItem
                 {
                     Path = "/role",
                     Name = "角色管理",
-                    Key = "role",
-                    Icon = "audit"
+                    Key = "role"
                 },
                  new MenuDataItem
                 {
                     Path = "/resources",
                     Name = "资源管理",
-                    Key = "resources",
-                    Icon = "folder-open"
+                    Key = "resources"
                 },
                  new MenuDataItem
                 {
                     Path = "/policy",
                     Name = "权限策略",
-                    Key = "policy",
-                    Icon = "file-protect",
+                    Key = "policy"
                 },
           }
         },
@@ -118,8 +126,7 @@
                 {
                     Path = "/application",
                     Name = "应用",
-                    Key = "application",
-                    Icon = "appstore-add",
+                    Key = "application"
                 }
           }
         }
