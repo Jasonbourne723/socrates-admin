@@ -42,7 +42,7 @@
                             <Icon Type="wechat" Theme="outline" Height="2em" Width="2em" />
                         </SpaceItem>
                         <SpaceItem Style="display:flex;justify-content:center;">
-                            <Icon Type="github" Theme="outline" Height="2em" Width="2em" />
+                            <Icon Type="github" Theme="outline" Height="2em" Width="2em" OnClick="GithubLogin" />
                         </SpaceItem>
                     </Space>
                 </Form>
@@ -74,5 +74,10 @@
     protected async Task LoginAsync(EditContext context)
     {
         await _authService.Login(_loginDto);
+    }
+
+    private void GithubLogin()
+    {
+        navigationManager.NavigateTo("https://github.com/login/oauth/authorize?client_id=Ov23lizQWFHaFAXWrOgC&redirect_uri=http://localhost:5274/github/redirect", true);
     }
 }

@@ -1,0 +1,34 @@
+﻿@page "/github/redirect"
+@using Services
+@layout AuthLayout
+
+
+<PageTitle>Index</PageTitle>
+
+<div>
+    <Spin size="large" />
+    @if (!string.IsNullOrWhiteSpace(_code))
+    {
+        <h1> @_code </h1>
+    }
+</div>
+
+@code {
+    protected string _code = "";
+    @inject NavigationManager navigationManager
+    @inject IAuthService _authService
+
+    [Parameter]
+    public long resourceId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+     
+        await base.OnInitializedAsync();
+
+        _code = queryParams["code"]!; // 替换为你的参数名
+        await _authService.GitHubLogin(_code);
+    }
+}

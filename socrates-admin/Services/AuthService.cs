@@ -53,6 +53,22 @@ namespace Services
                 _navigationManager.NavigateTo("/", true);
             }
         }
+
+        public async Task GitHubLogin(string code)
+        {
+            var httpResponseMessage = await _httpClient.PostAsJsonAsync($"/api/auth/github_login", new GitHubLoginDto { code = code });
+            var result = await httpResponseMessage.Content.ReadFromJsonAsync<Result<TokenDto>>();
+            if (result.error_code != 0)
+            {
+                await _messageService.Error($"登录失败：{result.message}");
+            }
+            else
+            {
+                await _messageService.Success("登录成功");
+                await _localStorageService.SetItemAsync("token", result.data);
+                _navigationManager.NavigateTo("/", true);
+            }
+        }
     }
 
 }
