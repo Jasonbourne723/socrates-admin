@@ -1,0 +1,104 @@
+﻿@page "/policies"
+@using Newtonsoft.Json;
+@using Services;
+
+<PageTitle>权限策略</PageTitle>
+
+@if (_pageList == null)
+{
+    <div>
+        <Spin size="large" />
+    </div>
+}
+else
+{
+    <Table TItem="PolicyDto" PageSize="5" Total="_pageList.TotalCount" DataSource="_pageList.Rows">
+        <TitleTemplate>
+            <Flex Justify="end" Gap="10">
+                <Button Type="primary" OnClick="HandleCreate">新增</Button>
+            </Flex>
+        </TitleTemplate>
+        <ColumnDefinitions Context="row">
+            <Selection />
+            <PropertyColumn Property="x=>x.id"></PropertyColumn>
+            <PropertyColumn Property="x=>x.name"></PropertyColumn>
+            <PropertyColumn Property="x=>x.description"></PropertyColumn>
+            <PropertyColumn Property="x=>x.resources">
+                @if (row.resources != null && row.resources.Count > 0)
+                {
+                    foreach (var item in row.resources)
+                    {
+                        var resource = _resourceDtos.FirstOrDefault(x => x.id == item.resource_id);
+                        if (resource != null)
+                        {
+                            <Tag Color="green">@resource.name</Tag>
+                        }
+                    }
+                }
+            </PropertyColumn>
+            <ActionColumn Title="Action">
+                <a @onclick="()=>{ HandleUpdate(row);}">Edit</a>
+                <Popconfirm Title="Are you sure?" OkText="确认" CancelText="取消" OnConfirm="async ()=>{await HandleDelete(row);}">
+                    <a>Delete</a>
+                </Popconfirm>
+            </ActionColumn>
+        </ColumnDefinitions>
+    </Table>
+}
+
+@code {
+
+    @inject IResourceService _resourceService
+    @inject IPermissionSpaceService _permissionSpaceService
+    @inject IPolicyService _policyService
+    @inject NavigationManager navigationManager
+
+    private PageList<PolicyDto> _pageList;
+    private int _pageIndex = 1;
+    private int _pageSize = 10;
+
+
+    private List<PermissionSpaceDto> _permissionSpaceDtos = new();
+    private List<ResourceDto> _resourceDtos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPermissionSpaces();
+        await GetResources();
+        await GetPageList();
+    }
+
+    protected async Task GetPageList()
+    {
+        _pageList = await _policyService.PageList(_pageIndex, _pageSize) ?? new PageList<PolicyDto>();
+    }
+
+    private void HandleCreate(MouseEventArgs e)
+    {
+        navigationManager.NavigateTo("/edit_policy/0");
+    }
+
+    private void HandleUpdate(PolicyDto policy)
+    {
+        navigationManager.NavigateTo($"/edit_policy/{policy.id}");
+    }
+
+    private async Task HandleDelete(PolicyDto policy)
+    {
+        await _policyService.Delete(policy.id);
+        await GetPageList();
+    }
+
+
+    private async Task GetPermissionSpaces()
+    {
+        _permissionSpaceDtos = await _permissionSpaceService.List() ?? new List<PermissionSpaceDto>();
+    }
+
+
+    private async Task GetResources()
+    {
+        _resourceDtos = await _resourceService.List() ?? new List<ResourceDto>();
+    }
+
+}

@@ -1,8 +1,147 @@
-﻿@page "/policy"
+﻿@page "/edit_policy/{policyId:long}"
+@using Services
 
-<PageTitle>权限策略</PageTitle>
+<div>
+    <Card Bordered="true">
 
+        <Form Model="@_policy"
+              LabelColSpan="8"
+              WrapperColSpan="8">
+            <FormItem Label="名称">
+                <Input @bind-Value="@context.name" />
+            </FormItem>
+            <FormItem Label="描述">
+                <Input @bind-Value="@context.description" />
+            </FormItem>
+
+            <FormItem Label="数据权限">
+                @if (_policy.resources != null && _policy.resources.Count > 0)
+                {
+                    var i = 0;
+                    foreach (var item in _policy.resources)
+                    {
+                        item.index = i++;
+                        <Card>
+                            <Form Model="@item"
+                                  LabelColSpan="2"
+                                  WrapperColSpan="4"
+                                  Context="resource">
+
+                                <FormItem Label="权限空间">
+                                    <Select TItem="PermissionSpaceDto"
+                                            TItemValue="long"
+                                            DataSource="@_permissionSpaces"
+                                            ValueName="@nameof(PermissionSpaceDto.id)"
+                                            LabelName="@nameof(PermissionSpaceDto.name)"
+                                            @bind-Value="@resource.permission_space_id"
+                                            DefaultActiveFirstOption>
+                                    </Select>
+                                </FormItem>
+                                <FormItem Label="资源">
+                                    <Select TItem="ResourceDto"
+                                            TItemValue="long"
+                                            DataSource="@_resources.FindAll(x=>x.permission_space_id == resource.permission_space_id)"
+                                            ValueName="@nameof(ResourceDto.id)"
+                                            LabelName="@nameof(ResourceDto.name)"
+                                            @bind-Value="@resource.resource_id"
+                                            DefaultActiveFirstOption>
+                                    </Select>
+                                </FormItem>
+
+                                @if (resource.resource_id > 0)
+                                {
+                                    var resourceSource = _resources.FirstOrDefault(x => x.id == resource.resource_id);
+                                    if (resourceSource != null)
+                                    {
+                                        if (resourceSource.category == 1)
+                                        {
+                                            <Table DataSource="resourceSource.items" TreeChildren="x=>x.items" Context="c">
+                                                <PropertyColumn Property="c=>c.name" />
+                                                @if (resourceSource.actions != null && resourceSource.actions.Count > 0)
+                                                {
+                                                    foreach (var action in resourceSource.actions)
+                                                    {
+                                                        <Column Title="@action" TData="bool">
+                                                            <Template>
+                                                                <Switch Size="small" Checked="true" />
+                                                            </Template>
+                                                        </Column>
+                                                    }
+
+                                                }
+                                            </Table>
+
+                                        }
+                                        else
+                                        {
+                                            <Table DataSource="resourceSource.items" Context="c">
+                                                <PropertyColumn Property="c=>c.name" />
+                                            </Table>
+
+                                        }
+                                    }
+                                }
+
+                                <FormItem WrapperColOffset="8" WrapperColSpan="16">
+                                    <Button Type="@ButtonType.Dashed" @onclick="()=>{RemoveResource(resource.index);} " Block>
+                                        删除
+                                    </Button>
+                                </FormItem>
+                            </Form>
+                        </Card>
+                        <div></div>
+                    }
+
+                }
+            </FormItem>
+            <FormItem WrapperColOffset="8" WrapperColSpan="8">
+                <Button Type="@ButtonType.Dashed" OnClick="AddResource" Block>添加数据权限</Button>
+            </FormItem>
+
+        </Form>
+    </Card>
+</div>
 
 @code {
 
+    @inject IPermissionSpaceService _permissionSpaceService
+    @inject IResourceService _resourceService
+
+    [Parameter]
+    public long policyId { get; set; }
+
+    private PolicyDto _policy = new();
+
+    private List<PermissionSpaceDto> _permissionSpaces = new();
+
+    private List<ResourceDto> _resources = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPermissionSpaces();
+        await GetResources();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task GetPermissionSpaces()
+    {
+        _permissionSpaces = await _permissionSpaceService.List();
+    }
+
+    private async Task GetResources()
+    {
+        _resources = await _resourceService.List();
+    }
+
+    private void AddResource()
+    {
+        _policy.resources = _policy.resources ?? new List<Models.Request.PolicyResourceDto>();
+        _policy.resources.Add(new Models.Request.PolicyResourceDto());
+    }
+
+    private void RemoveResource(int index)
+    {
+        _policy.resources.RemoveAt(index);
+    }
 }

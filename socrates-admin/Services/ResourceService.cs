@@ -23,7 +23,7 @@ namespace Services
             return await _customHttpClient.GetAndHandleBusinessErrorAsync<PageList<ResourceDto>>(path);
         }
 
-        public async Task<List<ResourceDto>?> List()
+        public async Task<List<ResourceDto>> List()
         {
             return await _customHttpClient.GetAndHandleBusinessErrorAsync<List<ResourceDto>>(_path);
         }
