@@ -1,23 +1,50 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazored.LocalStorage
+@using Services
+@inherits LayoutComponentBase
+@inject ILocalStorageService _localStorageService
+@inject NavigationManager _navigationManager
+@inject IAuthService _authService
 
-<Dropdown>
-    <Overlay>
-        <Menu>
-            <MenuItem><Icon Type="user" Theme="outline" /><span>个人中心</span></MenuItem>
-            <MenuItem><Icon Type="logout" Theme="outline" /><span>退出</span></MenuItem>
-        </Menu>
-    </Overlay>
-    <ChildContent>
-        <Space>
-            <SpaceItem>
-                <Avatar Size="large" Icon="user" />
-            </SpaceItem>
-        </Space>
-    </ChildContent>
-</Dropdown>
+
+@if (_loginUser != null)
+{
+    <Dropdown>
+        <Overlay>
+            <Menu>
+                <MenuItem><Icon Type="user" Theme="outline" /><span>个人中心</span></MenuItem>
+                <MenuItem @onclick="async ()=>{await Logout();}"><Icon Type="logout" Theme="outline" /><span>退出</span></MenuItem>
+            </Menu>
+        </Overlay>
+        <ChildContent>
+            <Space>
+                <SpaceItem>
+                    <Avatar Src=@_loginUser.avatar Size="large" Icon="user" />
+                    <span>@_loginUser.name</span>
+                </SpaceItem>
+            </Space>
+        </ChildContent>
+    </Dropdown>
+}
+
 
 
 
 @code {
+    private LoginUserDto _loginUser;
 
+    protected override async Task OnInitializedAsync()
+    {
+        _loginUser = await _localStorageService.GetItemAsync<LoginUserDto>("current_user");
+        if (_loginUser == null)
+        {
+            _navigationManager.NavigateTo("/login");
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task Logout()
+    {
+        await _authService.Logout();
+    }
 }

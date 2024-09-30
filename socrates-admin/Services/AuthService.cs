@@ -34,7 +34,7 @@ namespace Services
             {
                 await _messageService.Success("注册成功");
                 await _localStorageService.SetItemAsync("token", result.data);
-                _navigationManager.NavigateTo("/", true);
+                _navigationManager.NavigateTo("/");
             }
         }
 
@@ -50,7 +50,8 @@ namespace Services
             {
                 await _messageService.Success("登录成功");
                 await _localStorageService.SetItemAsync("token", result.data);
-                _navigationManager.NavigateTo("/", true);
+                await GetLoginUser(result.data.access_token);
+                _navigationManager.NavigateTo("/");
             }
         }
 
@@ -66,9 +67,29 @@ namespace Services
             {
                 await _messageService.Success("登录成功");
                 await _localStorageService.SetItemAsync("token", result.data);
-                _navigationManager.NavigateTo("/", true);
+                await GetLoginUser(result.data.access_token);
+                _navigationManager.NavigateTo("/");
             }
         }
+
+
+        public async Task Logout()
+        {
+            await _localStorageService.RemoveItemAsync("token");
+            await _localStorageService.RemoveItemAsync("current_user");
+            var httpResponseMessage = await _httpClient.PostAsync($"/api/auth/logout", null);
+            _navigationManager.NavigateTo("/login");
+        }
+
+        private async Task GetLoginUser(string token)
+        {
+            var loginUserResult = await _httpClient.GetFromJsonAsync<Result<LoginUserDto>>($"/api/auth/info");
+            await _localStorageService.SetItemAsync("current_user", loginUserResult.data);
+        }
+
+
+
+
     }
 
 }

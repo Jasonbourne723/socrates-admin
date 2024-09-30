@@ -6,7 +6,9 @@
 
 @if (_pageList == null)
 {
-    <Spin size="large" />
+    <div>
+        <Spin size="large" />
+    </div>
 }
 else
 {
@@ -79,12 +81,12 @@ else
 
     private void HandleCreate(MouseEventArgs e)
     {
-        navigationManager.NavigateTo("/edit_resource/0", false);
+        navigationManager.NavigateTo("/edit_resource/0");
     }
 
     private void HandleUpdate(ResourceDto resource)
     {
-        navigationManager.NavigateTo($"/edit_resource/{resource.id}", false);
+        navigationManager.NavigateTo($"/edit_resource/{resource.id}");
     }
 
     private async Task HandleDelete(ResourceDto ResourceDto)

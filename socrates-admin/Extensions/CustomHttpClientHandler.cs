@@ -42,19 +42,6 @@ namespace Extensions
             try
             {
                 var response = await base.SendAsync(request, cancellationToken);
-
-                //// 在这里处理响应，例如统一错误处理
-                //if (!response.IsSuccessStatusCode)
-                //{
-                //    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                //    {
-                //        _navigationManager.NavigateTo("/login", true);
-                //    }
-                //    else
-                //    {
-                //        await _messageService.Error($"接口访问失败：{response.StatusCode}");
-                //    }
-                //}
                 return response;
             }
             catch (HttpRequestException ex)
@@ -94,7 +81,7 @@ namespace Extensions
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    _navigationManager.NavigateTo("/login", true);
+                    _navigationManager.NavigateTo("/login");
                 }
                 else
                 {
@@ -119,7 +106,7 @@ namespace Extensions
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    _navigationManager.NavigateTo("/login", true);
+                    _navigationManager.NavigateTo("/login");
                 }
                 else
                 {
@@ -144,7 +131,7 @@ namespace Extensions
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    _navigationManager.NavigateTo("/login", true);
+                    _navigationManager.NavigateTo("/login");
                 }
                 else
                 {
@@ -169,7 +156,7 @@ namespace Extensions
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    _navigationManager.NavigateTo("/login", true);
+                    _navigationManager.NavigateTo("/login");
                 }
                 else
                 {
@@ -194,7 +181,7 @@ namespace Extensions
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    _navigationManager.NavigateTo("/login", true);
+                    _navigationManager.NavigateTo("/login");
                 }
                 else
                 {
@@ -219,7 +206,7 @@ namespace Extensions
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    _navigationManager.NavigateTo("/login", true);
+                    _navigationManager.NavigateTo("/login");
                 }
                 else
                 {
